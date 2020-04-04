@@ -1,7 +1,10 @@
 'use strict';
 
-const FILM_CARD_COUNT = 5;
-const FILM_CARD_EXTRA_COUNT = 2;
+const filmCardsCount = {
+  ALL: 5,
+  TOP_RATED: 2,
+  MOST_COMMENTED: 2
+};
 
 // Возвращает разметку блока со званием пользователя
 const createUserRatingTemplate = () => {
@@ -302,9 +305,14 @@ const filmsElement = siteMainElement.querySelector(`.films`);
 const filmsListElement = filmsElement.querySelector(`.films-list`);
 const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
 
-for (let i = 0; i < FILM_CARD_COUNT; i++) {
-  render(filmsListContainerElement, createFilmCardTemplate());
-}
+// Добавляет список элементов в DOM
+const renderElementsList = (count, container, template, place = `beforeend`) => {
+  for (let i = 0; i < count; i++) {
+    render(container, template, place);
+  }
+};
+
+renderElementsList(filmCardsCount.ALL, filmsListContainerElement, createFilmCardTemplate());
 
 render(filmsListElement, createShowMoreButtonTemplate());
 render(filmsElement, createExtraFilmsTemplate());
@@ -313,13 +321,8 @@ const extraFilmsElements = filmsElement.querySelectorAll(`.films-list--extra`);
 const topRatedFilmsListElement = extraFilmsElements[0].querySelector(`.films-list__container`);
 const mostCommentedFilmsListElement = extraFilmsElements[1].querySelector(`.films-list__container`);
 
-for (let i = 0; i < FILM_CARD_EXTRA_COUNT; i++) {
-  render(topRatedFilmsListElement, createFilmCardTemplate());
-}
-
-for (let i = 0; i < FILM_CARD_EXTRA_COUNT; i++) {
-  render(mostCommentedFilmsListElement, createFilmCardTemplate());
-}
+renderElementsList(filmCardsCount.TOP_RATED, topRatedFilmsListElement, createFilmCardTemplate());
+renderElementsList(filmCardsCount.MOST_COMMENTED, mostCommentedFilmsListElement, createFilmCardTemplate());
 
 const siteFooterElement = document.querySelector(`.footer`);
 render(siteFooterElement, createFooterStatisticsTemplate());
