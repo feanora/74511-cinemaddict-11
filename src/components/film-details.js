@@ -1,4 +1,3 @@
-// Возвращает разметку попапа с подробной информацией о фильме
 export const createFilmDetailsTemplate = () => {
   return (
     `<section class="film-details">

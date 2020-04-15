@@ -1,4 +1,3 @@
-// Возвращает разметку блока с фильмами
 export const createFilmsTemplate = () => {
   return (
     `<section class="films">

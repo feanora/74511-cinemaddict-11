@@ -1,4 +1,3 @@
-// Возвращает разметку карточки фильма
 export const createFilmCardTemplate = () => {
   return (
     `<article class="film-card">

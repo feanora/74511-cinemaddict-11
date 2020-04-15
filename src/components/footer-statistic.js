@@ -1,4 +1,3 @@
-// Возвращает разметку блока количества фильмов
 export const createFooterStatisticsTemplate = () => {
   return (
     `<section class="footer__statistics">
