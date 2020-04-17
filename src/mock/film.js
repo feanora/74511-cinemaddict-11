@@ -104,17 +104,24 @@ const GENRES = [
 ];
 
 const DESCRIPTION_TEXT = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
-
-const MIN_FILM_RATING = 1;
-const ROUND_DIGIT_NUMBER = 1;
-const MAX_VALUE_RATING = 10;
-const MAX_WRITERS_ARRAY = 3;
-const MIN_WRITERS_ARRAY = 2;
-const MAX_ACTORS_ARRAY = 6;
-const MIN_ACTORS_ARRAY = 2;
-const MAX_GENRES_ARRAY = 3;
-const MAX_SENTENCES_COUNT = 5;
-const MIN_SENTENCES_COUNT = 1;
+const ROUND_DIGIT_COUNT = 1;
+const FilmRatingValue = {
+  MIN: 1,
+  MAX: 10
+};
+const WritersCount = {
+  MIN: 2,
+  MAX: 3
+};
+const ActorsCount = {
+  MIN: 2,
+  MAX: 6
+};
+const SentencesCount = {
+  MIN: 1,
+  MAX: 5
+};
+const MAX_GENRES_COUNT = 3;
 
 const generatePosterTitle = (path, images) => {
   return path + getRandomArrayItem(images);
@@ -122,14 +129,14 @@ const generatePosterTitle = (path, images) => {
 
 const generateFilmDescription = () => {
   const descriptionItems = DESCRIPTION_TEXT.slice(0, DESCRIPTION_TEXT.length - 1).split(`. `);
-  const descriptionNewText = getNewLengthShuffleArray(descriptionItems, MAX_SENTENCES_COUNT, MIN_SENTENCES_COUNT).join(`. `);
+  const descriptionNewText = getNewLengthShuffleArray(descriptionItems, SentencesCount.MAX, SentencesCount.MIN).join(`. `);
   return descriptionNewText + `.`;
 };
 
 const generateRuntime = () => {
-  const minutesNumber = getRandomNumber(240, 60);
-  const hours = Math.round(minutesNumber / 60);
-  const minutes = Math.round(minutesNumber % 60);
+  const minutesCount = getRandomNumber(240, 60);
+  const hours = Math.round(minutesCount / 60);
+  const minutes = Math.round(minutesCount % 60);
   return (minutes > 0) ? `${hours}h ${minutes}m` : `${hours}h`;
 };
 
@@ -137,16 +144,16 @@ export const generateFilmCard = () => {
   return {
     title: getRandomArrayItem(FILM_TITLES),
     alternativeTitle: getRandomArrayItem(ALTERNATIVE_TITLES),
-    totalRating: getRandomFloatNumber(ROUND_DIGIT_NUMBER, MAX_VALUE_RATING, MIN_FILM_RATING),
+    totalRating: getRandomFloatNumber(ROUND_DIGIT_COUNT, FilmRatingValue.MAX, FilmRatingValue.MIN),
     poster: generatePosterTitle(POSTERS_PATH, POSTER_IMAGES),
     ageRating: getRandomArrayItem(AGE_RATINGS),
     director: getRandomArrayItem(DIRECTORS),
-    writers: getNewLengthShuffleArray(WRITERS, MAX_WRITERS_ARRAY, MIN_WRITERS_ARRAY).join(`, `),
-    actors: getNewLengthShuffleArray(ACTORS, MAX_ACTORS_ARRAY, MIN_ACTORS_ARRAY).join(`, `),
+    writers: getNewLengthShuffleArray(WRITERS, WritersCount.MAX, WritersCount.MIN).join(`, `),
+    actors: getNewLengthShuffleArray(ACTORS, ActorsCount.MAX, ActorsCount.MIN).join(`, `),
     releaseDate: formatDate(getRandomArrayItem(MOCK_DATES)),
     releaseCountry: getRandomArrayItem(RELEASE_COUNTRIES),
     runtime: generateRuntime(),
-    genres: getNewLengthShuffleArray(GENRES, MAX_GENRES_ARRAY),
+    genres: getNewLengthShuffleArray(GENRES, MAX_GENRES_COUNT),
     description: generateFilmDescription(),
     watchlist: getBooleanValue(),
     alreadyWatched: getBooleanValue(),

@@ -1,13 +1,14 @@
+import {MAX_SHORT_DESCRIPTION_LENGTH} from "../const";
 import {getMarkupClass} from "../util.js";
 
-const getDescriptionFilm = (description) => {
-  return description.length >= 140 ? description.slice(0, 139) + `...` : description;
+const getShortDescriptionFilm = (description) => {
+  return description.length > MAX_SHORT_DESCRIPTION_LENGTH ? description.slice(0, MAX_SHORT_DESCRIPTION_LENGTH - 1) + `...` : description;
 };
 export const createFilmCardTemplate = (film) => {
   const {title, totalRating, poster, releaseDate, runtime, genres, description, watchlist, alreadyWatched, favorite, commentsCount} = film;
   const genre = genres[0];
   const releaseYear = releaseDate.slice(-4);
-  const descriptionFilm = getDescriptionFilm(description);
+  const descriptionFilm = getShortDescriptionFilm(description);
   const isAddWatchList = getMarkupClass(watchlist, `--active`);
   const isWatched = getMarkupClass(alreadyWatched, `--active`);
   const isFavorite = getMarkupClass(favorite, `--active`);

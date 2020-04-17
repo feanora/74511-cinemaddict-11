@@ -5,6 +5,7 @@ export const FilmCardsCount = {
   TOP_RATED: 2,
   MOST_COMMENTED: 2
 };
+export const MAX_SHORT_DESCRIPTION_LENGTH = 140;
 export const MONTH_NAMES = [
   `January`,
   `February`,
