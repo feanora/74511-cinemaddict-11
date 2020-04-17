@@ -9,6 +9,8 @@ import {createFooterStatisticsTemplate} from "./components/footer-statistic.js";
 import {createFilmDetailsTemplate} from "./components/film-details.js";
 import {FilmCardsCount} from "./const.js";
 import {generateFilmCards} from "./mock/film.js";
+import {generateFilters} from "./mock/filter";
+import {createFilterTemplate} from "./components/filter.js";
 
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
@@ -19,6 +21,11 @@ const siteMainElement = document.querySelector((`.main`));
 
 render(siteHeaderElement, createUserRatingTemplate());
 render(siteMainElement, createMainMenuTemplate());
+
+const mainNavigationElement = document.querySelector(`.main-navigation`);
+const filters = generateFilters();
+render(mainNavigationElement, createFilterTemplate(filters), `afterbegin`);
+
 render(siteMainElement, createSortingTemplate());
 render(siteMainElement, createFilmsTemplate());
 
@@ -61,7 +68,7 @@ renderFilmsList(FilmCardsCount.TOP_RATED, topRatedFilmsListElement, 0);
 renderFilmsList(FilmCardsCount.MOST_COMMENTED, mostCommentedFilmsListElement, 0);
 
 const siteFooterElement = document.querySelector(`.footer`);
-render(siteFooterElement, createFooterStatisticsTemplate());
+render(siteFooterElement, createFooterStatisticsTemplate(FilmCardsCount.ALL));
 render(siteFooterElement, createFilmDetailsTemplate(films[0]), `afterend`);
 
 const filmDetailsElement = document.querySelector(`.film-details`);
@@ -70,4 +77,3 @@ const filmDetailsCloseElement = filmDetailsElement.querySelector(`.film-details_
 filmDetailsCloseElement.addEventListener(`click`, () => {
   filmDetailsElement.remove();
 });
-

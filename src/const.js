@@ -5,7 +5,6 @@ export const FilmCardsCount = {
   TOP_RATED: 2,
   MOST_COMMENTED: 2
 };
-
 export const MONTH_NAMES = [
   `January`,
   `February`,
@@ -19,4 +18,10 @@ export const MONTH_NAMES = [
   `October`,
   `November`,
   `December`
+];
+export const FILTER_NAMES = [
+  `All movies`,
+  `Watchlist `,
+  `History `,
+  `Favorites `
 ];
