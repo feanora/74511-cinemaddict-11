@@ -8,6 +8,7 @@ import {createExtraFilmsTemplate} from "./components/films-extra.js";
 import {createFooterStatisticsTemplate} from "./components/footer-statistic.js";
 import {createFilmDetailsTemplate} from "./components/film-details.js";
 import {FilmCardsCount} from "./const.js";
+import {generateFilmCards} from "./mock/film.js";
 
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
@@ -24,15 +25,15 @@ render(siteMainElement, createFilmsTemplate());
 const filmsElement = siteMainElement.querySelector(`.films`);
 const filmsListElement = filmsElement.querySelector(`.films-list`);
 const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
+const films = generateFilmCards(FilmCardsCount.ALL);
 
-const renderElementsList = (count, container, template, place = `beforeend`) => {
-  for (let i = 0; i < count; i++) {
-    render(container, template, place);
-  }
+const renderFilmsList = (filmsCount, container) => {
+  films.slice(1, filmsCount).forEach((film) => {
+    render(container, createFilmCardTemplate(film));
+  });
 };
 
-renderElementsList(FilmCardsCount.ALL, filmsListContainerElement, createFilmCardTemplate());
-
+renderFilmsList(FilmCardsCount.ALL, filmsListContainerElement);
 render(filmsListElement, createShowMoreButtonTemplate());
 render(filmsElement, createExtraFilmsTemplate());
 
@@ -40,12 +41,12 @@ const extraFilmsElements = filmsElement.querySelectorAll(`.films-list--extra`);
 const topRatedFilmsListElement = extraFilmsElements[0].querySelector(`.films-list__container`);
 const mostCommentedFilmsListElement = extraFilmsElements[1].querySelector(`.films-list__container`);
 
-renderElementsList(FilmCardsCount.TOP_RATED, topRatedFilmsListElement, createFilmCardTemplate());
-renderElementsList(FilmCardsCount.MOST_COMMENTED, mostCommentedFilmsListElement, createFilmCardTemplate());
+renderFilmsList(FilmCardsCount.TOP_RATED, topRatedFilmsListElement);
+renderFilmsList(FilmCardsCount.MOST_COMMENTED, mostCommentedFilmsListElement);
 
 const siteFooterElement = document.querySelector(`.footer`);
 render(siteFooterElement, createFooterStatisticsTemplate());
-render(siteFooterElement, createFilmDetailsTemplate(), `afterend`);
+render(siteFooterElement, createFilmDetailsTemplate(films[0]), `afterend`);
 
 const filmDetailsElement = document.querySelector(`.film-details`);
 const filmDetailsCloseElement = filmDetailsElement.querySelector(`.film-details__close-btn`);

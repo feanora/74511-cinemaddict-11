@@ -1,4 +1,4 @@
-import {getRandomArrayItem} from "../util.js";
+import {getRandomArrayItem, formatCommentDate} from "../util.js";
 
 const COMMENT_EMOTIONS = [
   `smile`,
@@ -19,10 +19,10 @@ const COMMENT_AUTHOR = [
   `Jon Snow`
 ];
 const MOCK_COMMENT_DATES = [
-  `2019-12-05T14:44:55.559Z`,
-  `2020-02-28T08:28:00.929Z`,
-  `2020-04-15T08:28:00.930Z`,
-  `2020-04-16T02:09:13.015Z`,
+  `2020-04-14T08:28:00.930Z`,
+  `2020-04-15T23:28:00.930Z`,
+  `2020-04-17T00:43:00.930Z`,
+  `2020-03-15T08:28:00.930Z`
 ];
 
 export const generateComment = () => {
@@ -30,7 +30,7 @@ export const generateComment = () => {
     emoji: getRandomArrayItem(COMMENT_EMOTIONS),
     text: getRandomArrayItem(COMMENT_TEXTS),
     author: getRandomArrayItem(COMMENT_AUTHOR),
-    day: getRandomArrayItem(MOCK_COMMENT_DATES)
+    day: formatCommentDate(getRandomArrayItem(MOCK_COMMENT_DATES))
   };
 };
 

@@ -1,3 +1,5 @@
+import {MONTH_NAMES} from "./const.js";
+
 export const getRandomNumber = (max, min = 0) => {
   return Math.round(Math.random() * (max - min) + min);
 };
@@ -28,14 +30,56 @@ export const getNewLengthArray = (array, maxArrayLength, minArrayLength = 1) => 
   return newArray;
 };
 
+export const getNewLengthShuffleArray = (array, maxArrayLength, minArrayLength = 1) => {
+  return getNewLengthArray(shuffleArray(array), maxArrayLength, minArrayLength);
+};
+
 export const getBooleanValue = () => Math.random() > 0.5;
 
-export const castTimeFormat = (value) => {
+export const getCheckedValue = (isChecked) => isChecked ? `checked` : ``;
+
+export const formatDate = (date) => {
+  const dateMs = Date.parse(date);
+  const convertedDate = new Date(dateMs);
+  const year = convertedDate.getFullYear();
+  const month = MONTH_NAMES[convertedDate.getMonth()];
+  const day = convertedDate.getDate();
+  return `${day} ${month} ${year}`;
+};
+
+const castTimeFormat = (value) => {
   return value < 10 ? `0${value}` : String(value);
 };
 
-export const formatTime = (date) => {
-  const hours = castTimeFormat(date.getHours() % 12);
-  const minutes = castTimeFormat(date.getMinutes());
-  return `${hours}:${minutes}`;
+export const formatCommentDate = (date) => {
+  const dateMs = Date.parse(date);
+  const convertedDate = new Date(dateMs);
+  const period = Math.floor((new Date() - dateMs) / 1000);
+  const periodInMinutes = Math.floor(period / 60);
+  const periodInHours = Math.floor(period / 3600);
+  const year = convertedDate.getFullYear();
+  const month = castTimeFormat(convertedDate.getMonth() + 1);
+  const day = convertedDate.getDate();
+  const hours = castTimeFormat(convertedDate.getHours() % 12);
+  const minutes = castTimeFormat(convertedDate.getMinutes());
+  const secInMin = 60;
+  const secInHour = 3600;
+  const secInDay = 86400;
+
+  switch (true) {
+    case (period < secInMin):
+      return `now`;
+    case (period < secInHour):
+      return `${periodInMinutes} minutes ago`;
+    case (period > secInHour && period <= secInHour * 12):
+      return `${periodInHours} hours ago`;
+    case (period > secInHour * 12 && period < secInDay):
+      return `Today`;
+    case (period >= secInDay && period < secInDay * 2):
+      return `Yesterday`;
+    case (period >= secInDay * 2 && period > secInDay * 3):
+      return `2 days ago`;
+    default:
+      return `${year}/${month}/${day} ${hours}:${minutes}`;
+  }
 };

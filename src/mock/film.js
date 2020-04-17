@@ -1,5 +1,4 @@
-import {getRandomArrayItem, getRandomFloatNumber} from "../util.js";
-import {getBooleanValue, getNewLengthArray, getRandomNumber, shuffleArray} from "../util";
+import {getRandomArrayItem, getRandomFloatNumber, getBooleanValue, getRandomNumber, getNewLengthShuffleArray, formatDate} from "../util.js";
 
 const FILM_TITLES = [
   `The Dance of Life`,
@@ -21,20 +20,20 @@ const ALTERNATIVE_TITLES = [
 ];
 const POSTERS_PATH = `./images/posters/`;
 const POSTER_IMAGES = [
-  `the-dance-of-life.png`,
-  `sagebrush-trail.png`,
-  `the-man-with-the-golden-arm.png`,
-  `santa-claus-conquers-the-martians.png`,
+  `the-dance-of-life.jpg`,
+  `sagebrush-trail.jpg`,
+  `the-man-with-the-golden-arm.jpg`,
+  `santa-claus-conquers-the-martians.jpg`,
   `popeye-meets-sinbad.png`,
-  `the-great-flamarion.png`,
+  `the-great-flamarion.jpg`,
   `made-for-each-other.png`
 ];
 const AGE_RATINGS = [
-  `0`,
-  `6`,
-  `12`,
-  `16`,
-  `18`
+  `0+`,
+  `6+`,
+  `12+`,
+  `16+`,
+  `18+`
 ];
 const DIRECTORS = [
   `John Cromwell`,
@@ -103,25 +102,16 @@ const GENRES = [
   `Sci-Fi`,
   `Thriller`
 ];
-const DESCRIPTION_ITEMS = [
-  `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
-  `Cras aliquet varius magna, non porta ligula feugiat eget.`,
-  `Fusce tristique felis at fermentum pharetra.`,
-  `Aliquam id orci ut lectus varius viverra.`,
-  `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`,
-  `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`,
-  `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`,
-  `Sed sed nisi sed augue convallis suscipit in sed felis.`,
-  `Aliquam erat volutpat.`,
-  `Nunc fermentum tortor ac porta dapibus.`,
-  `In rutrum ac purus sit amet tempus.`
-];
+
+const DESCRIPTION_TEXT = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 
 const MIN_FILM_RATING = 1;
 const ROUND_DIGIT_NUMBER = 1;
 const MAX_VALUE_RATING = 10;
 const MAX_WRITERS_ARRAY = 3;
+const MIN_WRITERS_ARRAY = 2;
 const MAX_ACTORS_ARRAY = 6;
+const MIN_ACTORS_ARRAY = 2;
 const MAX_GENRES_ARRAY = 3;
 const MAX_SENTENCES_COUNT = 5;
 const MIN_SENTENCES_COUNT = 1;
@@ -131,11 +121,16 @@ const generatePosterTitle = (path, images) => {
 };
 
 const generateFilmDescription = () => {
-  const descriptionSentences = getNewLengthArray(shuffleArray(DESCRIPTION_ITEMS, MAX_SENTENCES_COUNT, MIN_SENTENCES_COUNT));
-  const descriptionStr = descriptionSentences.reduce((accumulator, sentence) => {
-    return accumulator + sentence;
-  });
-  return descriptionStr;
+  const descriptionItems = DESCRIPTION_TEXT.slice(0, DESCRIPTION_TEXT.length - 1).split(`. `);
+  const descriptionNewText = getNewLengthShuffleArray(descriptionItems, MAX_SENTENCES_COUNT, MIN_SENTENCES_COUNT).join(`. `);
+  return descriptionNewText + `.`;
+};
+
+const generateRuntime = () => {
+  const minutesNumber = getRandomNumber(240, 60);
+  const hours = Math.round(minutesNumber / 60);
+  const minutes = Math.round(minutesNumber % 60);
+  return (minutes > 0) ? `${hours}h ${minutes}m` : `${hours}h`;
 };
 
 export const generateFilmCard = () => {
@@ -146,12 +141,12 @@ export const generateFilmCard = () => {
     poster: generatePosterTitle(POSTERS_PATH, POSTER_IMAGES),
     ageRating: getRandomArrayItem(AGE_RATINGS),
     director: getRandomArrayItem(DIRECTORS),
-    writers: getNewLengthArray(shuffleArray(WRITERS, MAX_WRITERS_ARRAY)),
-    actors: getNewLengthArray(shuffleArray(ACTORS, MAX_ACTORS_ARRAY)),
-    releaseDate: getRandomArrayItem(MOCK_DATES),
+    writers: getNewLengthShuffleArray(WRITERS, MAX_WRITERS_ARRAY, MIN_WRITERS_ARRAY).join(`, `),
+    actors: getNewLengthShuffleArray(ACTORS, MAX_ACTORS_ARRAY, MIN_ACTORS_ARRAY).join(`, `),
+    releaseDate: formatDate(getRandomArrayItem(MOCK_DATES)),
     releaseCountry: getRandomArrayItem(RELEASE_COUNTRIES),
-    runtime: getRandomNumber(240),
-    genre: getNewLengthArray(shuffleArray(GENRES, MAX_GENRES_ARRAY)),
+    runtime: generateRuntime(),
+    genres: getNewLengthShuffleArray(GENRES, MAX_GENRES_ARRAY),
     description: generateFilmDescription(),
     watchlist: getBooleanValue(),
     alreadyWatched: getBooleanValue(),
