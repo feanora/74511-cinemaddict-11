@@ -1,4 +1,3 @@
-// Возвращает разметку блока сортировки
 export const createSortingTemplate = () => {
   return (
     `<ul class="sort">

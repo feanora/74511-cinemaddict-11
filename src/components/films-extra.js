@@ -1,4 +1,3 @@
-// Возвращает разметку с блоками популяных фильмов
 export const createExtraFilmsTemplate = () => {
   return (
     `<section class="films-list--extra">

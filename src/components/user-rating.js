@@ -1,4 +1,3 @@
-// Возвращает разметку блока со званием пользователя
 export const createUserRatingTemplate = () => {
   return (
     `<section class="header__profile profile">
