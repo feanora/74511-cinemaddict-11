@@ -10,13 +10,7 @@ const createGenresMarkup = (genres) => {
   }).join(`\n`);
 };
 
-const getGenreTitle = (genres) => {
-  let genresTitle = `Genre`;
-  if (genres.length > 1) {
-    genresTitle = `Genres`;
-  }
-  return genresTitle;
-};
+const getGenreTitle = (genres) => genres.length > 1 ? `Genres` : `Genre`;
 
 const getCommentsList = (comments) => {
   return comments.map((comment) => createCommentTemplate(comment)).join(`\n`);
