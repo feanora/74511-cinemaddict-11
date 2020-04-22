@@ -1,3 +1,4 @@
+import CommentComponent from "./components/comment.js";
 import FilmCardComponent from "./components/film-card.js";
 import FilmPopupComponent from "./components/film-popup.js";
 import FilmsBlockComponent from "./components/films-block.js";
@@ -8,6 +9,7 @@ import MainMenuComponent from "./components/main-menu.js";
 import ShowMoreButtonComponent from "./components/show-more-button.js";
 import SortComponent from "./components/sort.js";
 import UserProfileComponent from "./components/user-profile.js";
+import {generateComments} from "./mock/comment.js";
 import {generateFilmCards} from "./mock/film.js";
 import {generateFilters} from "./mock/filter";
 import {generateUserProfile} from "./mock/user-profile.js";
@@ -19,6 +21,13 @@ const renderMainMenu = (mainMenuComponent, filters) => {
   render(siteMainElement, new SortComponent().getElement());
 };
 
+const renderComments = (film, commentsContainer) => {
+  const comments = generateComments(film.commentsCount);
+  comments.slice(0, comments.length).forEach((comment) => {
+    render(commentsContainer, new CommentComponent(comment).getElement());
+  });
+};
+
 const renderFilmCard = (filmsListElement, film) => {
   const filmCardComponent = new FilmCardComponent(film);
   render(filmsListElement, filmCardComponent.getElement());
@@ -26,6 +35,8 @@ const renderFilmCard = (filmsListElement, film) => {
     closeIfPopupOpen();
     const filmPopupComponent = new FilmPopupComponent(film);
     render(siteFooterElement, filmPopupComponent.getElement(), RenderPosition.AFTEREND);
+    const commentsContainerElement = filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
+    renderComments(film, commentsContainerElement);
     const popupCloseElement = filmPopupComponent.getElement().querySelector(`.film-details__close-btn`);
     popupCloseElement.addEventListener(`click`, closePopup);
   };

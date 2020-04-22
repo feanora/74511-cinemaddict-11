@@ -9,12 +9,13 @@ const createGenresMarkup = (genres) => {
 };
 
 const getGenreTitle = (genres) => genres.length > 1 ? `Genres` : `Genre`;
+const getCommentsTitle = (commentsCount) => commentsCount > 1 ? `Comments` : `Comment`;
 
 const createFilmPopupTemplate = (film) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseDate, releaseCountry, runtime, genres, description, watchlist, alreadyWatched, favorite, commentsCount} = film;
   const genresMarkup = createGenresMarkup(genres);
   const genresTitle = getGenreTitle(genres);
-
+  const commentsTitle = getCommentsTitle(commentsCount);
   return (
     `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -93,7 +94,7 @@ const createFilmPopupTemplate = (film) => {
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsCount}</span></h3>
+        <h3 class="film-details__comments-title">${commentsTitle} <span class="film-details__comments-count">${commentsCount}</span></h3>
 
         <ul class="film-details__comments-list">
         </ul>
