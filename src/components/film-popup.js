@@ -10,7 +10,7 @@ const createGenresMarkup = (genres) => {
 
 const getGenreTitle = (genres) => genres.length > 1 ? `Genres` : `Genre`;
 
-const createFilmPopapTemplate = (film) => {
+const createFilmPopupTemplate = (film) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseDate, releaseCountry, runtime, genres, description, watchlist, alreadyWatched, favorite, commentsCount} = film;
   const genresMarkup = createGenresMarkup(genres);
   const genresTitle = getGenreTitle(genres);
@@ -134,14 +134,14 @@ const createFilmPopapTemplate = (film) => {
   );
 };
 
-export default class FilmPopap {
+export default class FilmPopup {
   constructor(film) {
     this._film = film;
     this._element = null;
   }
 
   getTemplate() {
-    return createFilmPopapTemplate(this._film);
+    return createFilmPopupTemplate(this._film);
   }
 
   getElement() {

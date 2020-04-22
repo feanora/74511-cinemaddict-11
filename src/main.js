@@ -1,4 +1,5 @@
 import FilmCardComponent from "./components/film-card.js";
+import FilmPopupComponent from "./components/film-popup.js";
 import FilmsBlockComponent from "./components/films-block.js";
 import FilmsExtraBlockComponent from "./components/films-extra-block.js";
 import FilterComponent from "./components/filter.js";
@@ -21,6 +22,31 @@ const renderMainMenu = (mainMenuComponent, filters) => {
 const renderFilmCard = (filmsListElement, film) => {
   const filmCardComponent = new FilmCardComponent(film);
   render(filmsListElement, filmCardComponent.getElement());
+  const renderPopup = () => {
+    closeIfPopupOpen();
+    const filmPopupComponent = new FilmPopupComponent(film);
+    render(siteFooterElement, filmPopupComponent.getElement(), RenderPosition.AFTEREND);
+    const popupCloseElement = filmPopupComponent.getElement().querySelector(`.film-details__close-btn`);
+    popupCloseElement.addEventListener(`click`, closePopup);
+  };
+
+  const closePopup = () => {
+    const popupElement = document.querySelector(`.film-details`);
+    popupElement.remove();
+  };
+
+  const closeIfPopupOpen = () => {
+    const popupElement = document.querySelector(`.film-details`);
+    if (popupElement) {
+      closePopup();
+    }
+  };
+
+  const filmCardPoster = filmCardComponent.getElement().querySelector(`.film-card__poster`);
+  const filmCardTitle = filmCardComponent.getElement().querySelector(`.film-card__title`);
+  const filmCardCommentsCount = filmCardComponent.getElement().querySelector(`.film-card__comments`);
+  const filmCardActiveElements = [filmCardPoster, filmCardTitle, filmCardCommentsCount];
+  filmCardActiveElements.forEach((cardElement) => cardElement.addEventListener(`click`, renderPopup));
 };
 
 const renderFilmsList = (filmsCount, filmsContainer) => {
@@ -66,6 +92,7 @@ const renderFilmsExtraBlock = (filmsBlockComponent) => {
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector((`.main`));
+const siteFooterElement = document.querySelector(`.footer`);
 const user = generateUserProfile();
 render(siteHeaderElement, new UserProfileComponent(user).getElement());
 
@@ -79,5 +106,4 @@ const films = generateFilmCards(FilmCardsCount.ALL);
 renderAllFilmsBlock(filmsBlockComponent, films);
 renderFilmsExtraBlock(filmsBlockComponent, films);
 
-const siteFooterElement = document.querySelector(`.footer`);
 render(siteFooterElement, new FooterStatisticsComponent(FilmCardsCount.ALL).getElement());
