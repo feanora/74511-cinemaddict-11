@@ -1,4 +1,4 @@
-import {MONTH_NAMES} from "./const.js";
+import {MONTH_NAMES, RenderPosition, UserRating} from "./const.js";
 
 export const getRandomNumber = (max, min = 0) => {
   return Math.round(Math.random() * (max - min) + min);
@@ -82,5 +82,38 @@ export const formatCommentDate = (date) => {
       return `2 days ago`;
     default:
       return `${year}/${month}/${day} ${hours}:${minutes}`;
+  }
+};
+
+export const getUserRating = (watchedFilmsCount) => {
+  switch (true) {
+    case (watchedFilmsCount >= 1 && watchedFilmsCount <= 10):
+      return UserRating.NOVICE;
+    case (watchedFilmsCount >= 11 && watchedFilmsCount <= 20):
+      return UserRating.FAN;
+    case (watchedFilmsCount >= 21):
+      return UserRating.MOVIE_BUFF;
+    default:
+      return ``;
+  }
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
+
+export const render = (container, element, place = RenderPosition.BEFOREEND) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.AFTEREND:
+      container.after(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
   }
 };

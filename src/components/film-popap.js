@@ -1,6 +1,4 @@
-import {createCommentTemplate} from "./comment.js";
-import {generateComments} from "../mock/comment.js";
-import {getCheckedValue} from "../util.js";
+import {createElement, getCheckedValue} from "../util.js";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -12,16 +10,11 @@ const createGenresMarkup = (genres) => {
 
 const getGenreTitle = (genres) => genres.length > 1 ? `Genres` : `Genre`;
 
-const getCommentsList = (comments) => {
-  return comments.map((comment) => createCommentTemplate(comment)).join(`\n`);
-};
-
-export const createFilmDetailsTemplate = (film) => {
+const createFilmPopapTemplate = (film) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseDate, releaseCountry, runtime, genres, description, watchlist, alreadyWatched, favorite, commentsCount} = film;
   const genresMarkup = createGenresMarkup(genres);
   const genresTitle = getGenreTitle(genres);
-  const comments = generateComments(commentsCount);
-  const commentsList = getCommentsList(comments);
+
   return (
     `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -103,7 +96,6 @@ export const createFilmDetailsTemplate = (film) => {
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsCount}</span></h3>
 
         <ul class="film-details__comments-list">
-          ${commentsList}
         </ul>
 
         <div class="film-details__new-comment">
@@ -141,3 +133,25 @@ export const createFilmDetailsTemplate = (film) => {
 </section>`
   );
 };
+
+export default class FilmPopap {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmPopapTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
