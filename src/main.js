@@ -60,7 +60,7 @@ const renderFilmCard = (filmsListElement, film) => {
   filmCardActiveElements.forEach((cardElement) => cardElement.addEventListener(`click`, renderPopup));
 };
 
-const renderFilmsList = (filmsCount, filmsContainer) => {
+const renderFilmsList = (filmsCount, filmsContainer, films) => {
   films.slice(0, filmsCount).forEach((film) => {
     renderFilmCard(filmsContainer, film);
   });
@@ -71,7 +71,7 @@ const renderAllFilmsBlock = (filmsBlockComponent, films) => {
   const filmsListElement = filmsBlockComponent.getElement().querySelector(`.films-list`);
   const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
   let showingFilmCardsCount = FilmCardsCount.SHOWING;
-  renderFilmsList(showingFilmCardsCount, filmsListContainerElement);
+  renderFilmsList(showingFilmCardsCount, filmsListContainerElement, films);
   const showMoreButtonComponent = new ShowMoreButtonComponent();
   render(filmsListElement, showMoreButtonComponent.getElement());
 
@@ -91,14 +91,17 @@ const renderAllFilmsBlock = (filmsBlockComponent, films) => {
   showMoreButtonComponent.getElement().addEventListener(`click`, showMoreButtonComponentClickHandler);
 };
 
-const renderFilmsExtraBlock = (filmsBlockComponent) => {
+const renderFilmsExtraBlock = (filmsBlockComponent, films) => {
   render(filmsBlockComponent.getElement(), new FilmsExtraBlockComponent(ExtraFilmsTitles.TOP_RATED).getElement());
   render(filmsBlockComponent.getElement(), new FilmsExtraBlockComponent(ExtraFilmsTitles.MOST_COMMENTED).getElement());
   const extraFilmsElements = filmsBlockComponent.getElement().querySelectorAll(`.films-list--extra`);
   const topRatedFilmsListElement = extraFilmsElements[0].querySelector(`.films-list__container`);
   const mostCommentedFilmsListElement = extraFilmsElements[1].querySelector(`.films-list__container`);
-  renderFilmsList(FilmCardsCount.TOP_RATED, topRatedFilmsListElement);
-  renderFilmsList(FilmCardsCount.MOST_COMMENTED, mostCommentedFilmsListElement);
+
+  const filmsSortByRating = films.slice().sort((a, b) => b.totalRating - a.totalRating);
+  const filmsSortByCommentsCount = films.slice().sort((a, b) => b.commentsCount - a.commentsCount);
+  renderFilmsList(FilmCardsCount.TOP_RATED, topRatedFilmsListElement, filmsSortByRating);
+  renderFilmsList(FilmCardsCount.MOST_COMMENTED, mostCommentedFilmsListElement, filmsSortByCommentsCount);
 };
 
 const siteHeaderElement = document.querySelector(`.header`);
