@@ -1,6 +1,6 @@
 export const FilmCardsCount = {
   ALL: 22,
-  SHOWING: 6,
+  SHOWING: 5,
   BY_BUTTON: 5,
   TOP_RATED: 2,
   MOST_COMMENTED: 2
@@ -26,3 +26,17 @@ export const FILTER_NAMES = [
   `History `,
   `Favorites `
 ];
+export const UserRating = {
+  NOVICE: `novice`,
+  FAN: `fan`,
+  MOVIE_BUFF: `movie buff`
+};
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  AFTEREND: `afterend`,
+  BEFOREEND: `beforeend`
+};
+export const ExtraFilmsTitles = {
+  TOP_RATED: `Top rated`,
+  MOST_COMMENTED: `Most commented`
+};

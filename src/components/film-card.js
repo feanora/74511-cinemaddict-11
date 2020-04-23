@@ -1,10 +1,11 @@
 import {MAX_SHORT_DESCRIPTION_LENGTH} from "../const";
-import {getMarkupClass} from "../util.js";
+import {createElement, getMarkupClass} from "../util.js";
 
 const getShortDescriptionFilm = (description) => {
   return description.length > MAX_SHORT_DESCRIPTION_LENGTH ? description.slice(0, MAX_SHORT_DESCRIPTION_LENGTH - 1) + `...` : description;
 };
-export const createFilmCardTemplate = (film) => {
+
+const createFilmCardTemplate = (film) => {
   const {title, totalRating, poster, releaseDate, runtime, genres, description, watchlist, alreadyWatched, favorite, commentsCount} = film;
   const genre = genres[0];
   const releaseYear = releaseDate.slice(-4);
@@ -32,3 +33,25 @@ export const createFilmCardTemplate = (film) => {
         </article>`
   );
 };
+
+export default class FilmCard {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCardTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
