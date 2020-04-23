@@ -55,14 +55,12 @@ const renderFilmCard = (filmsListElement, film) => {
       closePopup();
     }
   };
-
-  const filmCardPoster = filmCardComponent.getElement().querySelector(`.film-card__poster`);
-  const filmCardTitle = filmCardComponent.getElement().querySelector(`.film-card__title`);
-  const filmCardCommentsCount = filmCardComponent.getElement().querySelector(`.film-card__comments`);
-  const filmCardActiveElements = [filmCardPoster, filmCardTitle, filmCardCommentsCount];
-  filmCardActiveElements.forEach((cardElement) => cardElement.addEventListener(`click`, () => {
-    renderPopup();
-  }));
+  filmCardComponent.getElement().addEventListener(`click`, (evt) => {
+    const target = evt.target.closest(`.film-card__poster, .film-card__title, .film-card__comments`);
+    if (target) {
+      renderPopup();
+    }
+  });
 };
 
 const renderFilmsList = (filmsCount, filmsContainer, films) => {
