@@ -38,7 +38,10 @@ const renderFilmCard = (filmsListElement, film) => {
     const commentsContainerElement = filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
     renderComments(film, commentsContainerElement);
     const popupCloseElement = filmPopupComponent.getElement().querySelector(`.film-details__close-btn`);
-    popupCloseElement.addEventListener(`click`, closePopup);
+    popupCloseElement.addEventListener(`click`, () => {
+      closePopup();
+    }
+    );
   };
 
   const closePopup = () => {
@@ -57,7 +60,9 @@ const renderFilmCard = (filmsListElement, film) => {
   const filmCardTitle = filmCardComponent.getElement().querySelector(`.film-card__title`);
   const filmCardCommentsCount = filmCardComponent.getElement().querySelector(`.film-card__comments`);
   const filmCardActiveElements = [filmCardPoster, filmCardTitle, filmCardCommentsCount];
-  filmCardActiveElements.forEach((cardElement) => cardElement.addEventListener(`click`, renderPopup));
+  filmCardActiveElements.forEach((cardElement) => cardElement.addEventListener(`click`, () => {
+    renderPopup();
+  }));
 };
 
 const renderFilmsList = (filmsCount, filmsContainer, films) => {
