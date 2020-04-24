@@ -1,4 +1,4 @@
-import {MONTH_NAMES, RenderPosition, UserRating} from "./const.js";
+import {MONTH_NAMES, RenderPosition, WatchedFilmsCount, UserRating} from "./const.js";
 
 export const getRandomNumber = (max, min = 0) => {
   return Math.round(Math.random() * (max - min) + min);
@@ -35,7 +35,6 @@ export const getNewLengthShuffleArray = (array, maxArrayLength, minArrayLength =
 };
 
 export const getBooleanValue = () => Math.random() > 0.5;
-
 export const getCheckedValue = (isChecked) => isChecked ? `checked` : ``;
 export const getMarkupClass = (flag, className) => flag ? className : ``;
 
@@ -87,11 +86,11 @@ export const formatCommentDate = (date) => {
 
 export const getUserRating = (watchedFilmsCount) => {
   switch (true) {
-    case (watchedFilmsCount >= 1 && watchedFilmsCount <= 10):
+    case (watchedFilmsCount >= WatchedFilmsCount.START && watchedFilmsCount <= WatchedFilmsCount.NOVICE_MAX):
       return UserRating.NOVICE;
-    case (watchedFilmsCount >= 11 && watchedFilmsCount <= 20):
+    case (watchedFilmsCount > WatchedFilmsCount.NOVICE_MAX && watchedFilmsCount <= WatchedFilmsCount.FAN_MAX):
       return UserRating.FAN;
-    case (watchedFilmsCount >= 21):
+    case (watchedFilmsCount > WatchedFilmsCount.FAN_MAX):
       return UserRating.MOVIE_BUFF;
     default:
       return ``;

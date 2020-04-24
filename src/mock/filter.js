@@ -1,7 +1,8 @@
 import {FILTER_NAMES} from "../const.js";
 import {getRandomNumber} from "../util.js";
+import {FilmCardsCount} from "../const.js";
 
-const MAX_FILTER_FILM_COUNT = 10;
+const MAX_FILTER_FILM_COUNT = FilmCardsCount.ALL;
 
 const generateFilters = () => {
   return FILTER_NAMES.map((it) => {
