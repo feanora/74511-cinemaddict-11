@@ -78,7 +78,7 @@ const renderFilmsList = (filmsCount, filmsContainer, films) => {
 };
 
 const renderAllFilmsBlock = (filmsBlockComponent, films) => {
-  render(siteMainElement, filmsBlockComponent.getElement());
+
   const filmsListElement = filmsBlockComponent.getElement().querySelector(`.films-list`);
   const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
   let showingFilmCardsCount = FilmCardsCount.SHOWING;
@@ -115,6 +115,18 @@ const renderFilmsExtraBlock = (filmsBlockComponent, films) => {
   renderFilmsList(FilmCardsCount.MOST_COMMENTED, mostCommentedFilmsListElement, filmsSortByCommentsCount);
 };
 
+const renderFilmsBlock = () => {
+  const filmsBlockComponent = new FilmsBlockComponent();
+  render(siteMainElement, filmsBlockComponent.getElement());
+  if (FilmCardsCount.ALL === 0) {
+    return;
+  }
+
+  const films = generateFilmCards(FilmCardsCount.ALL);
+  renderAllFilmsBlock(filmsBlockComponent, films);
+  renderFilmsExtraBlock(filmsBlockComponent, films);
+};
+
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector((`.main`));
 const siteFooterElement = document.querySelector(`.footer`);
@@ -123,12 +135,8 @@ render(siteHeaderElement, new UserProfileComponent(user).getElement());
 
 const mainMenuComponent = new MainMenuComponent();
 render(siteMainElement, mainMenuComponent.getElement());
+
 const filters = generateFilters();
 renderMainMenu(mainMenuComponent, filters);
-
-const filmsBlockComponent = new FilmsBlockComponent();
-const films = generateFilmCards(FilmCardsCount.ALL);
-renderAllFilmsBlock(filmsBlockComponent, films);
-renderFilmsExtraBlock(filmsBlockComponent, films);
-
+renderFilmsBlock();
 render(siteFooterElement, new FooterStatisticsComponent(FilmCardsCount.ALL).getElement());
