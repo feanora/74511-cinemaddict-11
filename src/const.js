@@ -5,6 +5,11 @@ export const FilmCardsCount = {
   TOP_RATED: 2,
   MOST_COMMENTED: 2
 };
+export const WatchedFilmsCount = {
+  START: 1,
+  NOVICE_MAX: 10,
+  FAN_MAX: 20
+};
 export const MAX_SHORT_DESCRIPTION_LENGTH = 140;
 export const MONTH_NAMES = [
   `January`,
