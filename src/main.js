@@ -42,16 +42,24 @@ const renderFilmCard = (filmsListElement, film) => {
       closePopup();
     }
     );
+    document.addEventListener(`keydown`, popupEscKeyDownHandler);
   };
 
   const closePopup = () => {
     const popupElement = document.querySelector(`.film-details`);
+    document.removeEventListener(`keydown`, popupEscKeyDownHandler);
     popupElement.remove();
   };
 
   const closeIfPopupOpen = () => {
     const popupElement = document.querySelector(`.film-details`);
     if (popupElement) {
+      closePopup();
+    }
+  };
+  const popupEscKeyDownHandler = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+    if (isEscKey) {
       closePopup();
     }
   };
