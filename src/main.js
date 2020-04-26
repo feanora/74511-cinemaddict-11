@@ -14,7 +14,7 @@ import {generateFilmCards} from "./mock/film.js";
 import {generateFilters} from "./mock/filter";
 import {generateUserProfile} from "./mock/user-profile.js";
 import {FilmCardsCount, RenderPosition, ExtraFilmsTitles} from "./const.js";
-import {render} from "./util.js";
+import {render} from "./utils/render.js";
 
 const renderMainMenu = (mainMenuComponent, filters) => {
   render(mainMenuComponent.getElement(), new FilterComponent(filters).getElement(), RenderPosition.AFTERBEGIN);
