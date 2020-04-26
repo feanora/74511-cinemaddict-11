@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component.js";
-import {getMarkupClass} from "../util.js";
+import {getMarkupClass} from "../utils/common.js";
 
 const ACTIVE_FILTER_INDEX = 0;
 

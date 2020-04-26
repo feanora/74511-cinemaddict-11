@@ -1,4 +1,4 @@
-import {MONTH_NAMES, RenderPosition, WatchedFilmsCount, UserRating} from "./const.js";
+import {MONTH_NAMES, WatchedFilmsCount, UserRating} from "../const.js";
 
 export const getRandomNumber = (max, min = 0) => {
   return Math.round(Math.random() * (max - min) + min);

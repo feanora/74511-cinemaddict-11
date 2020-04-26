@@ -14,7 +14,8 @@ import {generateFilmCards} from "./mock/film.js";
 import {generateFilters} from "./mock/filter";
 import {generateUserProfile} from "./mock/user-profile.js";
 import {FilmCardsCount, RenderPosition, ExtraFilmsTitles} from "./const.js";
-import {render, remove, removeElement} from "./utils/render.js";
+import {render, remove} from "./utils/render.js";
+import {removeElement} from "./utils/render";
 
 const renderMainMenu = (mainMenuComponent, filters) => {
   render(mainMenuComponent.getElement(), new FilterComponent(filters), RenderPosition.AFTERBEGIN);
@@ -37,8 +38,6 @@ const renderFilmCard = (filmsListElement, film) => {
     render(siteFooterElement, filmPopupComponent, RenderPosition.AFTEREND);
     const commentsContainerElement = filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
     renderComments(film, commentsContainerElement);
-
-    const popupCloseElement = filmPopupComponent.getElement().querySelector(`.film-details__close-btn`);
     const popupEscKeyDownHandler = (evt) => {
       const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
       if (isEscKey) {
@@ -49,7 +48,7 @@ const renderFilmCard = (filmsListElement, film) => {
       document.removeEventListener(`keydown`, popupEscKeyDownHandler);
       remove(filmPopupComponent);
     };
-    popupCloseElement.addEventListener(`click`, () => {
+    filmPopupComponent.setPopupCloseElementClickHandler(() => {
       closePopup();
     }
     );
@@ -62,7 +61,7 @@ const renderFilmCard = (filmsListElement, film) => {
     }
   };
 
-  filmCardComponent.getElement().addEventListener(`click`, (evt) => {
+  filmCardComponent.setFilmCardElementsClickHandler((evt) => {
     const target = evt.target.closest(`.film-card__poster, .film-card__title, .film-card__comments`);
     if (target) {
       renderPopup();
@@ -97,7 +96,7 @@ const renderAllFilmsBlock = (filmsBlockComponent, films) => {
     }
   };
 
-  showMoreButtonComponent.getElement().addEventListener(`click`, showMoreButtonComponentClickHandler);
+  showMoreButtonComponent.setClickHandler(showMoreButtonComponentClickHandler);
 };
 
 const renderFilmsExtraBlock = (filmsBlockComponent, films) => {

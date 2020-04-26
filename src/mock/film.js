@@ -1,4 +1,4 @@
-import {getRandomArrayItem, getRandomFloatNumber, getBooleanValue, getRandomNumber, getNewLengthShuffleArray, formatDate} from "../util.js";
+import {getRandomArrayItem, getRandomFloatNumber, getBooleanValue, getRandomNumber, getNewLengthShuffleArray, formatDate} from "../utils/common.js";
 
 const FILM_TITLES = [
   `The Dance of Life`,

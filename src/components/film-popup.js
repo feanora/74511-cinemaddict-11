@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component.js";
-import {getCheckedValue} from "../util.js";
+import {getCheckedValue} from "../utils/common.js";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -144,5 +144,9 @@ export default class FilmPopup extends AbstractComponent {
 
   getTemplate() {
     return createFilmPopupTemplate(this._film);
+  }
+
+  setPopupCloseElementClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
   }
 }
