@@ -1,4 +1,4 @@
-import {createElement} from "../util.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createFilmsExtraBlockTemplate = (filmsExtraBlockTitle) => {
   return (
@@ -11,25 +11,14 @@ const createFilmsExtraBlockTemplate = (filmsExtraBlockTitle) => {
   );
 };
 
-export default class FilmsExtraBlock {
+export default class FilmsExtraBlock extends AbstractComponent {
   constructor(blockTitle) {
+    super();
     this._blockTitle = blockTitle;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmsExtraBlockTemplate(this._blockTitle);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

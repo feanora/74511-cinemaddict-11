@@ -1,4 +1,4 @@
-import {createElement} from "../util.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createUserRatingTemplate = (user) => {
   const {rating, avatar} = user;
@@ -10,24 +10,13 @@ const createUserRatingTemplate = (user) => {
   );
 };
 
-export default class UserProfile {
+export default class UserProfile extends AbstractComponent {
   constructor(user) {
+    super();
     this._user = user;
-    this._element = null;
   }
 
   getTemplate() {
     return createUserRatingTemplate(this._user);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

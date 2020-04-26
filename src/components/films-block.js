@@ -1,5 +1,5 @@
+import AbstractComponent from "./abstract-component.js";
 import {FilmCardsCount} from "../const";
-import {createElement} from "../util.js";
 
 const createNoFilmsMarkup = () => {
   return (
@@ -20,23 +20,9 @@ const createFilmsBlockTemplate = () => {
     </section>`
   );
 };
-export default class FilmsBlock {
-  constructor() {
-    this._element = null;
-  }
 
+export default class FilmsBlock extends AbstractComponent {
   getTemplate() {
     return createFilmsBlockTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
