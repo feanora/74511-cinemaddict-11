@@ -1,6 +1,5 @@
-import {FILTER_NAMES} from "../const.js";
-import {getRandomNumber} from "../util.js";
-import {FilmCardsCount} from "../const.js";
+import {FILTER_NAMES, FilmCardsCount} from "../const.js";
+import {getRandomNumber} from "../utils/common.js";
 
 const MAX_FILTER_FILM_COUNT = FilmCardsCount.ALL;
 

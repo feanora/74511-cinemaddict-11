@@ -1,4 +1,4 @@
-import {getRandomArrayItem, formatCommentDate} from "../util.js";
+import {getRandomArrayItem, formatCommentDate} from "../utils/common.js";
 
 const COMMENT_EMOTIONS = [
   `smile`,

@@ -1,5 +1,6 @@
+import AbstractComponent from "./abstract-component.js";
 import {MAX_SHORT_DESCRIPTION_LENGTH} from "../const";
-import {createElement, getMarkupClass} from "../util.js";
+import {getMarkupClass} from "../utils/common.js";
 
 const getShortDescriptionFilm = (description) => {
   return description.length > MAX_SHORT_DESCRIPTION_LENGTH ? description.slice(0, MAX_SHORT_DESCRIPTION_LENGTH - 1) + `...` : description;
@@ -34,24 +35,17 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-export default class FilmCard {
+export default class FilmCard extends AbstractComponent {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._film);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setFilmCardElementsClickHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
   }
 }
