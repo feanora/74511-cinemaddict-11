@@ -1,4 +1,4 @@
-import {MONTH_NAMES, WatchedFilmsCount, UserRating} from "../const.js";
+import {MONTH_NAMES, WatchedFilmsCount, SortType, UserRating} from "../const.js";
 
 export const getRandomNumber = (max, min = 0) => {
   return Math.round(Math.random() * (max - min) + min);
@@ -95,5 +95,24 @@ export const getUserRating = (watchedFilmsCount) => {
     default:
       return ``;
   }
+};
+
+export const getSortedFilms = (films, sortType, from, to) => {
+  let sortedFilms = [];
+  const showingFilms = films.slice();
+
+  switch (sortType) {
+    case SortType.DATE:
+      sortedFilms = showingFilms.sort((a, b) => b.releaseDate.slice(-4) - a.releaseDate.slice(-4));
+      break;
+    case SortType.RATING:
+      sortedFilms = showingFilms.sort((a, b) => b.totalRating - a.totalRating);
+      break;
+    case SortType.DEFAULT:
+      sortedFilms = showingFilms;
+      break;
+  }
+
+  return sortedFilms.slice(from, to);
 };
 
