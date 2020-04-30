@@ -10,6 +10,11 @@ export const WatchedFilmsCount = {
   NOVICE_MAX: 10,
   FAN_MAX: 20
 };
+export const SortType = {
+  DATE: `date`,
+  RATING: `rating`,
+  DEFAULT: `default`
+};
 export const MAX_SHORT_DESCRIPTION_LENGTH = 140;
 export const MONTH_NAMES = [
   `January`,
