@@ -18,51 +18,29 @@ const renderFilmsList = (filmsContainer, films) => {
 export default class PageController {
   constructor(container) {
     this._container = container;
+    this._films = [];
+    this._showingFilmCardsCount = FilmCardsCount.SHOWING;
     this._sortComponent = new SortComponent();
     this._filmsBlockComponent = new FilmsBlockComponent();
     this._showMoreButtonComponent = new ShowMoreButtonComponent();
+    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
+    this._sortComponent.setSortTypeChangeHandler(this._sortTypeChangeHandler);
   }
   render(films) {
-    const siteMainElement = this._container;
-    render(siteMainElement, this._sortComponent);
-    render(siteMainElement, this._filmsBlockComponent);
+    this._films = films;
+    render(this._container, this._sortComponent);
+    render(this._container, this._filmsBlockComponent);
     const filmsBlockComponent = this._filmsBlockComponent.getElement();
 
     const renderAllFilmsBlock = () => {
       const filmsListElement = filmsBlockComponent.querySelector(`.films-list`);
       const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
-      let showingFilmCardsCount = FilmCardsCount.SHOWING;
-
-      const renderShowMoreButton = () => {
-        if (showingFilmCardsCount >= films.length) {
-          return;
-        }
-        render(filmsListElement, this._showMoreButtonComponent);
-        this._showMoreButtonComponent.setClickHandler(() => {
-          const prevFilmCardCount = showingFilmCardsCount;
-          showingFilmCardsCount += FilmCardsCount.BY_BUTTON;
-
-          const sortedFilms = getSortedFilms(films, this._sortComponent.getSortType(), prevFilmCardCount, showingFilmCardsCount);
-          renderFilmsList(filmsListContainerElement, sortedFilms);
-          if (showingFilmCardsCount >= films.length) {
-            remove(this._showMoreButtonComponent);
-          }
-        });
-      };
 
       if (FilmCardsCount.ALL === 0) {
         return;
       }
-      renderFilmsList(filmsListContainerElement, films.slice(0, showingFilmCardsCount));
-      renderShowMoreButton();
-
-      this._sortComponent.setSortTypeChangeHandler((sortType) => {
-        showingFilmCardsCount = FilmCardsCount.SHOWING;
-        let sortedFilms = getSortedFilms(films, sortType, 0, showingFilmCardsCount);
-        filmsListContainerElement.innerHTML = ``;
-        renderFilmsList(filmsListContainerElement, sortedFilms);
-        renderShowMoreButton();
-      });
+      renderFilmsList(filmsListContainerElement, films.slice(0, this._showingFilmCardsCount));
+      this._renderShowMoreButton();
     };
 
     const renderFilmsExtraBlock = () => {
@@ -79,5 +57,37 @@ export default class PageController {
     };
     renderAllFilmsBlock();
     renderFilmsExtraBlock();
+  }
+
+  _renderShowMoreButton() {
+    if (this._showingFilmCardsCount >= this._films.length) {
+      return;
+    }
+
+    const filmsBlockComponent = this._filmsBlockComponent.getElement();
+    const filmsListElement = filmsBlockComponent.querySelector(`.films-list`);
+    const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
+    render(filmsListElement, this._showMoreButtonComponent);
+    this._showMoreButtonComponent.setClickHandler(() => {
+      const prevFilmCardCount = this._showingFilmCardsCount;
+      this._showingFilmCardsCount += FilmCardsCount.BY_BUTTON;
+
+      const sortedFilms = getSortedFilms(this._films, this._sortComponent.getSortType(), prevFilmCardCount, this._showingFilmCardsCount);
+      renderFilmsList(filmsListContainerElement, sortedFilms);
+      if (this._showingFilmCardsCount >= this._films.length) {
+        remove(this._showMoreButtonComponent);
+      }
+    });
+  }
+
+  _sortTypeChangeHandler(sortType) {
+    this._showingFilmCardsCount = FilmCardsCount.SHOWING;
+    const filmsBlockComponent = this._filmsBlockComponent.getElement();
+    const filmsListElement = filmsBlockComponent.querySelector(`.films-list`);
+    const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
+    let sortedFilms = getSortedFilms(this._films, sortType, 0, this._showingFilmCardsCount);
+    filmsListContainerElement.innerHTML = ``;
+    renderFilmsList(filmsListContainerElement, sortedFilms);
+    this._renderShowMoreButton();
   }
 }

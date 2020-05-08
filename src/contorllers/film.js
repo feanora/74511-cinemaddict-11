@@ -22,6 +22,7 @@ export default class FilmController {
 
   render(film) {
     this._filmCardComponent = new FilmCardComponent(film);
+    this._filmPopupComponent = new FilmPopupComponent(film);
     render(this._container, this._filmCardComponent);
 
     this._filmCardComponent.setFilmCardElementsClickHandler((evt) => {
@@ -33,7 +34,6 @@ export default class FilmController {
   }
 
   _renderPopup(film) {
-    this._filmPopupComponent = new FilmPopupComponent(film);
     const siteFooterElement = document.querySelector(`.footer`);
     render(siteFooterElement, this._filmPopupComponent, RenderPosition.AFTEREND);
     const commentsContainerElement = this._filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
@@ -42,6 +42,7 @@ export default class FilmController {
       this._closePopup();
     });
     document.addEventListener(`keydown`, this._popupEscKeyDownHandler);
+    return this._filmPopupComponent;
   }
 
   _closePopup() {
