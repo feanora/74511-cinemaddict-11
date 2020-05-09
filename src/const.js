@@ -50,3 +50,15 @@ export const ExtraFilmsTitles = {
   TOP_RATED: `Top rated`,
   MOST_COMMENTED: `Most commented`
 };
+
+export const EMOJIS = [
+  `smile`,
+  `sleeping`,
+  `puke`,
+  `angry`
+];
+
+export const Mode = {
+  DEFAULT: `default`,
+  POPUP: `popup`
+};
