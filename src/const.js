@@ -57,3 +57,8 @@ export const EMOJIS = [
   `puke`,
   `angry`
 ];
+
+export const Mode = {
+  DEFAULT: `default`,
+  POPUP: `popup`
+};

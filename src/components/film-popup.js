@@ -192,4 +192,9 @@ export default class FilmPopup extends AbstractSmartComponent {
       this.rerender();
     });
   }
+
+  reset() {
+    this._emotion = ``;
+    this.rerender();
+  }
 }

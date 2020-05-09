@@ -3,7 +3,7 @@ import {remove, render, replace} from "../utils/render.js";
 import CommentComponent from "../components/comment.js";
 import FilmCardComponent from "../components/film-card.js";
 import FilmPopupComponent from "../components/film-popup.js";
-import {RenderPosition} from "../const.js";
+import {RenderPosition, Mode} from "../const.js";
 
 const renderComments = (film, commentsContainer) => {
   const comments = generateComments(film.commentsCount);
@@ -13,9 +13,11 @@ const renderComments = (film, commentsContainer) => {
 };
 
 export default class FilmController {
-  constructor(container, dataChangeHandler) {
+  constructor(container, dataChangeHandler, viewChangeHandler) {
     this._container = container;
+    this._mode = Mode.DEFAULT;
     this._dataChangeHandler = dataChangeHandler;
+    this._viewChangeHandler = viewChangeHandler;
     this._filmCardComponent = null;
     this._filmPopupComponent = null;
     this._popupEscKeyDownHandler = this._popupEscKeyDownHandler.bind(this);
@@ -59,9 +61,17 @@ export default class FilmController {
     }
   }
 
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._closePopup();
+    }
+  }
+
   _renderPopup(film) {
+    this._viewChangeHandler();
     const siteFooterElement = document.querySelector(`.footer`);
     render(siteFooterElement, this._filmPopupComponent, RenderPosition.AFTEREND);
+    this._mode = Mode.POPUP;
     const commentsContainerElement = this._filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
     renderComments(film, commentsContainerElement);
     this._filmPopupComponent.setPopupCloseElementClickHandler(() => {
@@ -75,6 +85,8 @@ export default class FilmController {
   _closePopup() {
     document.removeEventListener(`keydown`, this._popupEscKeyDownHandler);
     remove(this._filmPopupComponent);
+    this._filmPopupComponent.reset();
+    this._mode = Mode.DEFAULT;
   }
 
   _popupEscKeyDownHandler(evt) {
