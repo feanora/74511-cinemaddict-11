@@ -20,10 +20,6 @@ export const render = (container, component, place = RenderPosition.BEFOREEND) =
   }
 };
 
-export const removeElement = (element) => {
-  element.remove();
-};
-
 export const remove = (component) => {
   component.getElement().remove();
   component.removeElement();

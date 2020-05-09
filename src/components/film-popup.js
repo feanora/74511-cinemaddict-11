@@ -1,5 +1,6 @@
-import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 import {getCheckedValue} from "../utils/common.js";
+
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -136,29 +137,48 @@ const createFilmPopupTemplate = (film) => {
   );
 };
 
-export default class FilmPopup extends AbstractComponent {
+export default class FilmPopup extends AbstractSmartComponent {
   constructor(film) {
     super();
     this._film = film;
+    this._closeClickHandler = null;
+    this._addWatchListChangeHandler = null;
+    this._WatchedChangeHandler = null;
+    this._favoriteChangeHandler = null;
   }
 
   getTemplate() {
     return createFilmPopupTemplate(this._film);
   }
 
+  recoveryListeners() {
+    this.setPopupCloseElementClickHandler(this._closeClickHandler);
+    this.setAddWatchListButtonChangeHandler(this._addWatchListChangeHandler);
+    this.setWatchedButtonChangeHandler(this._WatchedChangeHandler);
+    this.setFavoriteButtonChangeHandler(this._favoriteChangeHandler);
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
   setPopupCloseElementClickHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
+    this._closeClickHandler = handler;
   }
 
   setAddWatchListButtonChangeHandler(handler) {
     this.getElement().querySelector(`#watchlist`).addEventListener(`change`, handler);
+    this._addWatchListChangeHandler = handler;
   }
 
   setWatchedButtonChangeHandler(handler) {
     this.getElement().querySelector(`#watched`).addEventListener(`change`, handler);
+    this._WatchedChangeHandler = handler;
   }
 
   setFavoriteButtonChangeHandler(handler) {
     this.getElement().querySelector(`#favorite`).addEventListener(`change`, handler);
+    this._favoriteChangeHandler = handler;
   }
 }
