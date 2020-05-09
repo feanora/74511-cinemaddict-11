@@ -1,9 +1,9 @@
-import {generateComments} from "../mock/comment";
-import {remove, render} from "../utils/render";
-import CommentComponent from "../components/comment";
-import FilmCardComponent from "../components/film-card";
-import FilmPopupComponent from "../components/film-popup";
-import {RenderPosition} from "../const";
+import {generateComments} from "../mock/comment.js";
+import {remove, render, replace} from "../utils/render.js";
+import CommentComponent from "../components/comment.js";
+import FilmCardComponent from "../components/film-card.js";
+import FilmPopupComponent from "../components/film-popup.js";
+import {RenderPosition} from "../const.js";
 
 const renderComments = (film, commentsContainer) => {
   const comments = generateComments(film.commentsCount);
@@ -13,17 +13,19 @@ const renderComments = (film, commentsContainer) => {
 };
 
 export default class FilmController {
-  constructor(container) {
+  constructor(container, dataChangeHandler) {
     this._container = container;
+    this._dataChangeHandler = dataChangeHandler;
     this._filmCardComponent = null;
     this._filmPopupComponent = null;
     this._popupEscKeyDownHandler = this._popupEscKeyDownHandler.bind(this);
   }
 
   render(film) {
+    const oldFilmCardComponent = this._filmCardComponent;
+    const oldFilmPopupComponent = this._filmPopupComponent;
     this._filmCardComponent = new FilmCardComponent(film);
     this._filmPopupComponent = new FilmPopupComponent(film);
-    render(this._container, this._filmCardComponent);
 
     this._filmCardComponent.setFilmCardElementsClickHandler((evt) => {
       const target = evt.target.closest(`.film-card__poster, .film-card__title, .film-card__comments`);
@@ -31,6 +33,30 @@ export default class FilmController {
         this._renderPopup(film);
       }
     });
+
+    this._filmCardComponent.setAddWatchListButtonClickHandler(() => {
+      this._dataChangeHandler(this, film, Object.assign({}, film, {
+        watchlist: !film.watchlist,
+      }));
+    });
+    this._filmCardComponent.setWatchedButtonClickHandler(() => {
+      this._dataChangeHandler(this, film, Object.assign({}, film, {
+        alreadyWatched: !film.alreadyWatched,
+      }));
+    });
+    this._filmCardComponent.setFavoriteButtonClickHandler(() => {
+      this._dataChangeHandler(this, film, Object.assign({}, film, {
+        favorite: !film.favorite,
+      }));
+    });
+
+    if (oldFilmCardComponent && oldFilmPopupComponent) {
+      replace(this._filmCardComponent, oldFilmCardComponent);
+      replace(this._filmPopupComponent, oldFilmPopupComponent);
+
+    } else {
+      render(this._container, this._filmCardComponent);
+    }
   }
 
   _renderPopup(film) {
@@ -41,8 +67,9 @@ export default class FilmController {
     this._filmPopupComponent.setPopupCloseElementClickHandler(() => {
       this._closePopup();
     });
+
+    this._setPopupChangeHandlers(film);
     document.addEventListener(`keydown`, this._popupEscKeyDownHandler);
-    return this._filmPopupComponent;
   }
 
   _closePopup() {
@@ -57,4 +84,21 @@ export default class FilmController {
     }
   }
 
+  _setPopupChangeHandlers(film) {
+    this._filmPopupComponent.setAddWatchListButtonChangeHandler(() => {
+      this._dataChangeHandler(this, film, Object.assign({}, film, {
+        watchlist: !film.watchlist,
+      }));
+    });
+    this._filmPopupComponent.setWatchedButtonChangeHandler(() => {
+      this._dataChangeHandler(this, film, Object.assign({}, film, {
+        alreadyWatched: !film.alreadyWatched,
+      }));
+    });
+    this._filmPopupComponent.setFavoriteButtonChangeHandler(() => {
+      this._dataChangeHandler(this, film, Object.assign({}, film, {
+        favorite: !film.favorite,
+      }));
+    });
+  }
 }
