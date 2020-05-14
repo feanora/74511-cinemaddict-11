@@ -27,9 +27,9 @@ const createFilmCardTemplate = (film) => {
           <p class="film-card__description">${descriptionFilm}</p>
           <a class="film-card__comments">${commentsCount} comments</a>
           <form class="film-card__controls">
-            <button class="film-card__controls-item${isAddWatchList} button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-            <button class="film-card__controls-item${isWatched} button film-card__controls-item--mark-as-watched">Mark as watched</button>
-            <button class="film-card__controls-item${isFavorite} button film-card__controls-item--favorite">Mark as favorite</button>
+            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist film-card__controls-item${isAddWatchList}">Add to watchlist</button>
+            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched film-card__controls-item${isWatched}">Mark as watched</button>
+            <button class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item${isFavorite}">Mark as favorite</button>
           </form>
         </article>`
   );

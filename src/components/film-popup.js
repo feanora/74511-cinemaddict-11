@@ -185,16 +185,16 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._favoriteChangeHandler = handler;
   }
 
+  reset() {
+    this._emotion = ``;
+    this.rerender();
+  }
+
   _subscribeOnEvents() {
     const element = this.getElement();
     element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
       this._emotion = evt.target.value;
       this.rerender();
     });
-  }
-
-  reset() {
-    this._emotion = ``;
-    this.rerender();
   }
 }

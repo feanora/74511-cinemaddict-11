@@ -77,7 +77,7 @@ export const formatCommentDate = (date) => {
       return `Today`;
     case (period >= secInDay && period < secInDay * 2):
       return `Yesterday`;
-    case (period >= secInDay * 2 && period > secInDay * 3):
+    case (period >= secInDay * 2 && period < secInDay * 3):
       return `2 days ago`;
     default:
       return `${year}/${month}/${day} ${hours}:${minutes}`;
