@@ -1,7 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
-import {getCheckedValue} from "../utils/common.js";
 import {EMOJIS} from "../const.js";
-
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -9,6 +7,19 @@ const createGenresMarkup = (genres) => {
       `<span class="film-details__genre">${genre}</span>`
     );
   }).join(`\n`);
+};
+
+const FilmPopupButtonName = {
+  watchlist: `Add to watchlist`,
+  watched: `Already watched`,
+  favorite: `Add to favorites`
+};
+
+const createButtonMarkup = (name, isChecked) => {
+  return (
+    `<input type="checkbox" class="film-details__control-input visually-hidden" id="${name}" name="${name}" ${isChecked ? `checked` : ``}>
+     <label for="${name}" class="film-details__control-label film-details__control-label--${name}">${FilmPopupButtonName[name]}</label>`
+  );
 };
 
 const createAddEmojiMarkup = (emotion) => {
@@ -30,10 +41,13 @@ const getGenreTitle = (genres) => genres.length > 1 ? `Genres` : `Genre`;
 const getCommentsTitle = (commentsCount) => commentsCount > 1 ? `Comments` : `Comment`;
 
 const createFilmPopupTemplate = (film, emotion) => {
-  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseDate, releaseCountry, runtime, genres, description, watchlist, alreadyWatched, favorite, commentsCount} = film;
+  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseDate, releaseCountry, runtime, genres, description, commentsCount} = film;
   const genresMarkup = createGenresMarkup(genres);
   const genresTitle = getGenreTitle(genres);
   const commentsTitle = getCommentsTitle(commentsCount);
+  const addWatchListButton = createButtonMarkup(`watchlist`, film.watchlist);
+  const watchedButton = createButtonMarkup(`watched`, film.alreadyWatched);
+  const favoriteButton = createButtonMarkup(`favorite`, film.favorite);
   return (
     `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -99,14 +113,9 @@ const createFilmPopupTemplate = (film, emotion) => {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${getCheckedValue(watchlist)}>
-        <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${getCheckedValue(alreadyWatched)}>
-        <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${getCheckedValue(favorite)}>
-        <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
+           ${addWatchListButton}
+           ${watchedButton}
+           ${favoriteButton}
       </section>
     </div>
 

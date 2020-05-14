@@ -35,8 +35,6 @@ export const getNewLengthShuffleArray = (array, maxArrayLength, minArrayLength =
 };
 
 export const getBooleanValue = () => Math.random() > 0.5;
-export const getCheckedValue = (isChecked) => isChecked ? `checked` : ``;
-export const getMarkupClass = (flag, className) => flag ? className : ``;
 
 export const formatDate = (date) => {
   const dateMs = Date.parse(date);

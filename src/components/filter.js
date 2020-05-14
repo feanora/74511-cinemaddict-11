@@ -1,12 +1,11 @@
 import AbstractComponent from "./abstract-component.js";
-import {getMarkupClass} from "../utils/common.js";
 
 const ACTIVE_FILTER_INDEX = 0;
 
 const createFilterMarkup = (filter, isActive) => {
   const {name, count} = filter;
   return (
-    `<a href="#${isActive ? `all` : name.toLowerCase()}" class="main-navigation__item ${getMarkupClass(isActive, `main-navigation__item--active`)}">${name } ${isActive ? `` : `<span class="main-navigation__item-count">${count}</span>`}</a>`
+    `<a href="#${isActive ? `all` : name.toLowerCase()}" class="main-navigation__item ${isActive ? `main-navigation__item--active` : ``}">${name } ${isActive ? `` : `<span class="main-navigation__item-count">${count}</span>`}</a>`
   );
 };
 
