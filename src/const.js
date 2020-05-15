@@ -62,3 +62,9 @@ export const Mode = {
   DEFAULT: `default`,
   POPUP: `popup`
 };
+
+export const TimeFormat = {
+  RELEASE_YEAR: `YYYY`,
+  RELEASE_DATE: `DD MMMM YYYY`,
+  RUNTIME: `h[h] mm[m]`
+};

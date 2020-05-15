@@ -1,4 +1,4 @@
-import {getRandomArrayItem, getRandomFloatNumber, getBooleanValue, getRandomNumber, getNewLengthShuffleArray, formatDate} from "../utils/common.js";
+import {getRandomArrayItem, getRandomFloatNumber, getBooleanValue, getRandomNumber, getNewLengthShuffleArray} from "../utils/common.js";
 
 const FILM_TITLES = [
   `The Dance of Life`,
@@ -134,10 +134,7 @@ const generateFilmDescription = () => {
 };
 
 const generateRuntime = () => {
-  const minutesCount = getRandomNumber(240, 60);
-  const hours = Math.round(minutesCount / 60);
-  const minutes = Math.round(minutesCount % 60);
-  return (minutes > 0) ? `${hours}h ${minutes}m` : `${hours}h`;
+  return getRandomNumber(240, 9);
 };
 
 export const generateFilmCard = () => {
@@ -150,7 +147,7 @@ export const generateFilmCard = () => {
     director: getRandomArrayItem(DIRECTORS),
     writers: getNewLengthShuffleArray(WRITERS, WritersCount.MAX, WritersCount.MIN).join(`, `),
     actors: getNewLengthShuffleArray(ACTORS, ActorsCount.MAX, ActorsCount.MIN).join(`, `),
-    releaseDate: formatDate(getRandomArrayItem(MOCK_DATES)),
+    releaseDate: getRandomArrayItem(MOCK_DATES),
     releaseCountry: getRandomArrayItem(RELEASE_COUNTRIES),
     runtime: generateRuntime(),
     genres: getNewLengthShuffleArray(GENRES, MAX_GENRES_COUNT),
