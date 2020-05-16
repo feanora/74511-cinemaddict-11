@@ -55,6 +55,8 @@ export default class FilmController {
     const siteFooterElement = document.querySelector(`.footer`);
     render(siteFooterElement, this._filmPopupComponent, RenderPosition.AFTEREND);
 
+    document.body.classList.add(`hide-overflow`);
+
     const commentsContainerElement = this._filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
     renderComments(film, commentsContainerElement);
 
@@ -65,6 +67,7 @@ export default class FilmController {
   _closePopup() {
     this._mode = Mode.DEFAULT;
     document.removeEventListener(`keydown`, this._popupEscKeyDownHandler);
+    document.body.classList.remove(`hide-overflow`);
     remove(this._filmPopupComponent);
     this._filmPopupComponent.reset();
   }
