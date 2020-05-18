@@ -137,8 +137,13 @@ const generateRuntime = () => {
   return getRandomNumber(240, 9);
 };
 
+const generateId = () => {
+  return String(new Date() + Math.random());
+};
+
 export const generateFilmCard = () => {
   return {
+    id: generateId(),
     title: getRandomArrayItem(FILM_TITLES),
     alternativeTitle: getRandomArrayItem(ALTERNATIVE_TITLES),
     totalRating: getRandomFloatNumber(ROUND_DIGIT_COUNT, FilmRatingValue.MAX, FilmRatingValue.MIN),
