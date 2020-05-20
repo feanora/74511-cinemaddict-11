@@ -1,25 +1,22 @@
-import {generateComments} from "../mock/comment.js";
 import {remove, render, replace} from "../utils/render.js";
 import CommentComponent from "../components/comment.js";
 import FilmCardComponent from "../components/film-card.js";
 import FilmPopupComponent from "../components/film-popup.js";
 import {RenderPosition, Mode} from "../const.js";
 
-const renderComments = (film, commentsContainer) => {
-  const comments = generateComments(film.commentsCount);
-  comments.slice(0, comments.length).forEach((comment) => {
-    render(commentsContainer, new CommentComponent(comment));
-  });
-};
-
 export default class FilmController {
-  constructor(container, dataChangeHandler, viewChangeHandler) {
+  constructor(container, commentsModel, dataChangeHandler, viewChangeHandler) {
     this._container = container;
+    this._commentsModel = commentsModel;
+
     this._mode = Mode.DEFAULT;
-    this._dataChangeHandler = dataChangeHandler;
-    this._viewChangeHandler = viewChangeHandler;
+
     this._filmCardComponent = null;
     this._filmPopupComponent = null;
+
+    this._dataChangeHandler = dataChangeHandler;
+    this._viewChangeHandler = viewChangeHandler;
+
     this._popupEscKeyDownHandler = this._popupEscKeyDownHandler.bind(this);
   }
 
@@ -42,6 +39,13 @@ export default class FilmController {
     }
   }
 
+  _renderComments(film, commentsContainer) {
+    const filmComments = this._commentsModel.getCommentsByIds(film.comments);
+    filmComments.slice(0, film.comments.length).forEach((comment) => {
+      render(commentsContainer, new CommentComponent(comment));
+    });
+  }
+
   setDefaultView() {
     if (this._mode !== Mode.DEFAULT) {
       this._closePopup();
@@ -58,7 +62,7 @@ export default class FilmController {
     document.body.classList.add(`hide-overflow`);
 
     const commentsContainerElement = this._filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
-    renderComments(film, commentsContainerElement);
+    this._renderComments(film, commentsContainerElement);
 
     this._setPopupHandlers(film);
     document.addEventListener(`keydown`, this._popupEscKeyDownHandler);

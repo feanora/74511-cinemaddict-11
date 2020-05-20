@@ -19,10 +19,11 @@ const createButtonMarkup = (name, isActive = true) => {
 };
 
 const createFilmCardTemplate = (film) => {
-  const {title, totalRating, poster, genres, description, commentsCount} = film;
+  const {title, totalRating, poster, genres, description} = film;
   const genre = genres[0];
   const releaseYear = formatDate(film.releaseDate, TimeFormat.RELEASE_YEAR);
   const filmRuntime = getFilmDuration(film.runtime);
+  const commentsCount = film.comments.length;
   const descriptionFilm = getShortDescriptionFilm(description);
   const addWatchListButton = createButtonMarkup(`add-to-watchlist`, !film.watchlist);
   const watchedButton = createButtonMarkup(`mark-as-watched`, !film.alreadyWatched);

@@ -2,7 +2,6 @@ import AbstractSmartComponent from "./abstract-smart-component.js";
 import {formatDate, getFilmDuration} from "../utils/common.js";
 import {EMOJIS, TimeFormat} from "../const.js";
 
-
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
     return (
@@ -43,9 +42,10 @@ const getGenreTitle = (genres) => genres.length > 1 ? `Genres` : `Genre`;
 const getCommentsTitle = (commentsCount) => commentsCount > 1 ? `Comments` : `Comment`;
 
 const createFilmPopupTemplate = (film, emotion) => {
-  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseCountry, genres, description, commentsCount} = film;
+  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseCountry, genres, description} = film;
   const genresMarkup = createGenresMarkup(genres);
   const genresTitle = getGenreTitle(genres);
+  const commentsCount = film.comments.length;
   const commentsTitle = getCommentsTitle(commentsCount);
   const addWatchListButton = createButtonMarkup(`watchlist`, film.watchlist);
   const watchedButton = createButtonMarkup(`watched`, film.alreadyWatched);
