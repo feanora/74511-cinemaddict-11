@@ -76,6 +76,12 @@ export default class FilmController {
     this._filmPopupComponent.reset();
   }
 
+  destroy() {
+    remove(this._filmCardComponent);
+    remove(this._filmPopupComponent);
+    document.removeEventListener(`keydown`, this._popupEscKeyDownHandler);
+  }
+
   _popupEscKeyDownHandler(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
     if (isEscKey) {

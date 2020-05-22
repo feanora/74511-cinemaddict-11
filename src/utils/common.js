@@ -66,7 +66,7 @@ export const getSortedFilms = (films, sortType, from, to) => {
 
   switch (sortType) {
     case SortType.DATE:
-      sortedFilms = showingFilms.sort((a, b) => b.releaseDate.slice(-4) - a.releaseDate.slice(-4));
+      sortedFilms = showingFilms.sort((a, b) => formatDate(b.releaseDate, TimeFormat.RELEASE_YEAR) - formatDate(a.releaseDate, TimeFormat.RELEASE_YEAR));
       break;
     case SortType.RATING:
       sortedFilms = showingFilms.sort((a, b) => b.totalRating - a.totalRating);

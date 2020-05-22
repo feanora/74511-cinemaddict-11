@@ -39,16 +39,16 @@ export const MONTH_NAMES = [
 
 export const FILTER_NAMES = [
   `All movies`,
-  `Watchlist `,
-  `History `,
-  `Favorites `
+  `Watchlist`,
+  `History`,
+  `Favorites`
 ];
 
 export const FilterType = {
-  ALL_MOVIES: `All movies`,
-  WATCHLIST: `Watchlist`,
-  HISTORY: `History`,
-  FAVORITES: `Favorites`
+  ALL_MOVIES: `all`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`
 };
 
 export const UserRating = {
