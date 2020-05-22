@@ -11,12 +11,22 @@ export default class Films {
     this._filterChangeHandlers = [];
   }
 
+  getFilmsAll() {
+    return this._films;
+  }
+
   getFilms() {
     return getFilmsByFilter(this._films, this._activeFilterType);
   }
 
-  getFilmsAll() {
-    return this._films;
+  getTopRatedFilms() {
+    const films = this.getFilmsAll();
+    return films.slice().sort((a, b) => b.totalRating - a.totalRating);
+  }
+
+  getMostCommentedFilms() {
+    const films = this.getFilmsAll();
+    return films.slice().sort((a, b) => b.comments.length - a.comments.length);
   }
 
   setFilms(films) {
