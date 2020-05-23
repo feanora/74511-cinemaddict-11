@@ -1,5 +1,6 @@
 import {remove, render, replace} from "../utils/render.js";
-import CommentComponent from "../components/comment.js";
+import CommentsComponent from "../components/comments.js";
+import NewCommentComponent from "../components/new-comment.js";
 import FilmCardComponent from "../components/film-card.js";
 import FilmPopupComponent from "../components/film-popup.js";
 import {RenderPosition, Mode} from "../const.js";
@@ -13,6 +14,8 @@ export default class FilmController {
 
     this._filmCardComponent = null;
     this._filmPopupComponent = null;
+    this._commentsComponent = null;
+    this._newCommentComponent = null;
 
     this._dataChangeHandler = dataChangeHandler;
     this._viewChangeHandler = viewChangeHandler;
@@ -33,36 +36,43 @@ export default class FilmController {
     if (oldFilmCardComponent && oldFilmPopupComponent) {
       replace(this._filmCardComponent, oldFilmCardComponent);
       replace(this._filmPopupComponent, oldFilmPopupComponent);
+      const commentsContainerElement = this._filmPopupComponent.getElement().querySelector(`.film-details__inner`);
+      this._renderCommentsBlock(film, commentsContainerElement);
 
     } else {
       render(this._container, this._filmCardComponent);
     }
   }
 
-  _renderComments(film, commentsContainer) {
+  _renderCommentsBlock(film, commentsContainer) {
     const filmComments = this._commentsModel.getCommentsByIds(film.comments);
-    filmComments.slice(0, film.comments.length).forEach((comment) => {
-      render(commentsContainer, new CommentComponent(comment));
-    });
+
+    this._commentsComponent = new CommentsComponent(filmComments);
+    render(commentsContainer, this._commentsComponent);
+
+    if (!this._newCommentComponent) {
+      this._newCommentComponent = new NewCommentComponent();
+    }
+
+    const newCommentContainerElement = this._commentsComponent.getElement().querySelector(`.film-details__comments-wrap`);
+    render(newCommentContainerElement, this._newCommentComponent);
   }
 
-  setDefaultView() {
-    if (this._mode !== Mode.DEFAULT) {
-      this._closePopup();
-    }
+  _renderPopup(film) {
+    const siteFooterElement = document.querySelector(`.footer`);
+    render(siteFooterElement, this._filmPopupComponent, RenderPosition.AFTEREND);
+
+    const commentsContainerElement = this._filmPopupComponent.getElement().querySelector(`.film-details__inner`);
+    this._renderCommentsBlock(film, commentsContainerElement);
   }
 
   _openPopup(film) {
     this._viewChangeHandler();
     this._mode = Mode.POPUP;
 
-    const siteFooterElement = document.querySelector(`.footer`);
-    render(siteFooterElement, this._filmPopupComponent, RenderPosition.AFTEREND);
-
     document.body.classList.add(`hide-overflow`);
 
-    const commentsContainerElement = this._filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
-    this._renderComments(film, commentsContainerElement);
+    this._renderPopup(film);
 
     this._setPopupHandlers(film);
     document.addEventListener(`keydown`, this._popupEscKeyDownHandler);
@@ -73,13 +83,20 @@ export default class FilmController {
     document.removeEventListener(`keydown`, this._popupEscKeyDownHandler);
     document.body.classList.remove(`hide-overflow`);
     remove(this._filmPopupComponent);
-    this._filmPopupComponent.reset();
+    this._filmPopupComponent.rerender();
+    this._newCommentComponent.reset();
   }
 
   destroy() {
     remove(this._filmCardComponent);
     remove(this._filmPopupComponent);
     document.removeEventListener(`keydown`, this._popupEscKeyDownHandler);
+  }
+
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._closePopup();
+    }
   }
 
   _popupEscKeyDownHandler(evt) {
