@@ -4,6 +4,7 @@ import NewCommentComponent from "../components/new-comment.js";
 import FilmCardComponent from "../components/film-card.js";
 import FilmPopupComponent from "../components/film-popup.js";
 import {RenderPosition, Mode} from "../const.js";
+import {encode} from "he";
 
 export default class FilmController {
   constructor(container, commentsModel, dataChangeHandler, viewChangeHandler) {
@@ -135,16 +136,17 @@ export default class FilmController {
     if (isCtrlCommandPlusEnter) {
       const newCommentEmotionElement = this._newCommentComponent.getElement().querySelector(`.film-details__add-emoji-label img`);
       const newCommentTextValue = this._newCommentComponent.getElement().querySelector(`.film-details__comment-input`).value;
+      const sanitizedCommentText = encode(newCommentTextValue);
       const IMG_ALT_PREFIX = `emoji-`;
 
-      if (!newCommentEmotionElement || newCommentTextValue.length === 0) {
+      if (!newCommentEmotionElement || sanitizedCommentText.length === 0) {
         return;
       }
 
       const newComment = {
         id: String(new Date() + Math.random()),
         author: `Evil Author`,
-        comment: newCommentTextValue,
+        comment: sanitizedCommentText,
         date: new Date(),
         emotion: newCommentEmotionElement.alt.substring(IMG_ALT_PREFIX.length)
       };

@@ -1,5 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 import {EMOJIS} from "../const";
+import {encode} from "he";
 
 const createAddEmojiMarkup = (emotion) => {
   return emotion ? `<img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">` : ``;
@@ -16,7 +17,7 @@ const createEmojiListMarkup = () => {
   }).join(`\n`);
 };
 
-const createNewCommentTemplate = (emotion) => {
+const createNewCommentTemplate = (emotion, textareaValue) => {
   return (
     `<div class="film-details__new-comment">
         <div for="add-emoji" class="film-details__add-emoji-label">
@@ -24,7 +25,7 @@ const createNewCommentTemplate = (emotion) => {
         </div>
 
         <label class="film-details__comment-label">
-        <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+        <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${textareaValue}</textarea>
         </label>
 
         <div class="film-details__emoji-list">
@@ -37,13 +38,16 @@ const createNewCommentTemplate = (emotion) => {
 export default class NewComment extends AbstractSmartComponent {
   constructor() {
     super();
+
     this._emotion = ``;
+    this._textareaValue = ``;
+
     this._commentSubmitHandler = null;
     this._subscribeOnEvents();
   }
 
   getTemplate() {
-    return createNewCommentTemplate(this._emotion);
+    return createNewCommentTemplate(this._emotion, this._textareaValue);
   }
 
   rerender() {
@@ -58,12 +62,14 @@ export default class NewComment extends AbstractSmartComponent {
   reset() {
     this.rerender();
     this._emotion = ``;
+    this._textareaValue = ``;
   }
 
   _subscribeOnEvents() {
     const element = this.getElement();
     element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
       this._emotion = evt.target.value;
+      this._textareaValue = encode(element.querySelector(`.film-details__comment-input`).value);
       this.rerender();
     });
   }
