@@ -116,9 +116,8 @@ export default class FilmPopup extends AbstractSmartComponent {
     super();
     this._film = film;
     this._closeClickHandler = null;
-    this._addWatchListChangeHandler = null;
-    this._WatchedChangeHandler = null;
-    this._favoriteChangeHandler = null;
+
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
@@ -127,9 +126,8 @@ export default class FilmPopup extends AbstractSmartComponent {
 
   recoveryListeners() {
     this.setPopupCloseElementClickHandler(this._closeClickHandler);
-    this.setAddWatchListButtonChangeHandler(this._addWatchListChangeHandler);
-    this.setWatchedButtonChangeHandler(this._WatchedChangeHandler);
-    this.setFavoriteButtonChangeHandler(this._favoriteChangeHandler);
+
+    this._subscribeOnEvents();
   }
 
   rerender() {
@@ -141,18 +139,18 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._closeClickHandler = handler;
   }
 
-  setAddWatchListButtonChangeHandler(handler) {
-    this.getElement().querySelector(`#watchlist`).addEventListener(`change`, handler);
-    this._addWatchListChangeHandler = handler;
-  }
+  _subscribeOnEvents() {
+    const element = this.getElement();
+    element.querySelector(`#watchlist`).addEventListener(`change`, () => {
+      this._film.watchlist = !this._film.watchlist;
+    });
 
-  setWatchedButtonChangeHandler(handler) {
-    this.getElement().querySelector(`#watched`).addEventListener(`change`, handler);
-    this._WatchedChangeHandler = handler;
-  }
+    element.querySelector(`#watched`).addEventListener(`change`, () => {
+      this._film.alreadyWatched = !this._film.alreadyWatched;
+    });
 
-  setFavoriteButtonChangeHandler(handler) {
-    this.getElement().querySelector(`#favorite`).addEventListener(`change`, handler);
-    this._favoriteChangeHandler = handler;
+    element.querySelector(`#favorite`).addEventListener(`change`, () => {
+      this._film.favorite = !this._film.favorite;
+    });
   }
 }
