@@ -7,7 +7,7 @@ import PageController from "./contorllers/page.js";
 import UserProfileComponent from "./components/user-profile.js";
 import {generateFilmCards} from "./mock/film.js";
 import {generateUserProfile} from "./mock/user-profile.js";
-import {COMMENTS_COUNT, FilmCardsCount} from "./const.js";
+import {FilmCardsCount, COMMENTS_COUNT} from "./const.js";
 import {render} from "./utils/render.js";
 import {generateComments} from "./mock/comment.js";
 

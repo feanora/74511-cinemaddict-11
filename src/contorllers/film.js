@@ -9,6 +9,7 @@ export default class FilmController {
   constructor(container, commentsModel, dataChangeHandler, viewChangeHandler) {
     this._container = container;
     this._commentsModel = commentsModel;
+    this._film = null;
 
     this._mode = Mode.DEFAULT;
 
@@ -21,9 +22,11 @@ export default class FilmController {
     this._viewChangeHandler = viewChangeHandler;
 
     this._popupEscKeyDownHandler = this._popupEscKeyDownHandler.bind(this);
+    this._commentChangeHandler = this._commentChangeHandler.bind(this);
   }
 
   render(film) {
+    this._film = film;
     const oldFilmCardComponent = this._filmCardComponent;
     const oldFilmPopupComponent = this._filmPopupComponent;
 
@@ -36,18 +39,19 @@ export default class FilmController {
     if (oldFilmCardComponent && oldFilmPopupComponent) {
       replace(this._filmCardComponent, oldFilmCardComponent);
       replace(this._filmPopupComponent, oldFilmPopupComponent);
-      const commentsContainerElement = this._filmPopupComponent.getElement().querySelector(`.film-details__inner`);
-      this._renderCommentsBlock(film, commentsContainerElement);
+      this._renderCommentsBlock();
 
     } else {
       render(this._container, this._filmCardComponent);
     }
   }
 
-  _renderCommentsBlock(film, commentsContainer) {
-    const filmComments = this._commentsModel.getCommentsByIds(film.comments);
+  _renderCommentsBlock() {
+    const allComments = this._commentsModel.getComments();
+    const filmComments = this._getFilmComments(allComments);
 
     this._commentsComponent = new CommentsComponent(filmComments);
+    const commentsContainer = this._filmPopupComponent.getElement().querySelector(`.film-details__inner`);
     render(commentsContainer, this._commentsComponent);
 
     if (!this._newCommentComponent) {
@@ -56,14 +60,26 @@ export default class FilmController {
 
     const newCommentContainerElement = this._commentsComponent.getElement().querySelector(`.film-details__comments-wrap`);
     render(newCommentContainerElement, this._newCommentComponent);
+
+    this._commentsComponent.setDeleteCommentButtonClickHandler((evt) => {
+      this._deleteCommentsButtonClickHandler(evt);
+    });
   }
 
-  _renderPopup(film) {
+  _getFilmComments(comments) {
+    return this._film.comments.map((it) => comments.find((comment) => comment.id === it));
+  }
+
+  _rerenderCommentsBlock() {
+    remove(this._commentsComponent);
+    this._renderCommentsBlock();
+  }
+
+  _renderPopup() {
     const siteFooterElement = document.querySelector(`.footer`);
     render(siteFooterElement, this._filmPopupComponent, RenderPosition.AFTEREND);
 
-    const commentsContainerElement = this._filmPopupComponent.getElement().querySelector(`.film-details__inner`);
-    this._renderCommentsBlock(film, commentsContainerElement);
+    this._renderCommentsBlock();
   }
 
   _openPopup(film) {
@@ -80,11 +96,16 @@ export default class FilmController {
 
   _closePopup() {
     this._mode = Mode.DEFAULT;
+
     document.removeEventListener(`keydown`, this._popupEscKeyDownHandler);
     document.body.classList.remove(`hide-overflow`);
+
     remove(this._filmPopupComponent);
+
     this._filmPopupComponent.rerender();
     this._newCommentComponent.reset();
+
+    this._dataChangeHandler(this, this._film, this._film);
   }
 
   destroy() {
@@ -97,6 +118,42 @@ export default class FilmController {
     if (this._mode !== Mode.DEFAULT) {
       this._closePopup();
     }
+  }
+
+  _commentChangeHandler(oldData, newData) {
+    if (newData === null) {
+      const isSuccess = this._commentsModel.deleteComment(oldData);
+      this._rerenderCommentsBlock();
+      if (isSuccess) {
+        this._rerenderCommentsBlock();
+      }
+    }
+
+    if (oldData === null) {
+      this._commentsModel.addComment(newData);
+      this._rerenderCommentsBlock();
+      this._newCommentComponent.reset();
+    }
+  }
+
+  _deleteCommentsButtonClickHandler(evt) {
+    evt.preventDefault();
+
+    const target = evt.target;
+
+    if (target && target.className !== `film-details__comment-delete`) {
+      return;
+    }
+
+    const commentId = target.dataset.id;
+
+    this._deleteFilmCommentIndex(commentId);
+    this._commentChangeHandler(commentId, null);
+  }
+
+  _deleteFilmCommentIndex(id) {
+    const filmCommentIndex = this._film.comments.findIndex((it) => it === Number(id));
+    this._film.comments = [].concat(this._film.comments.slice(0, filmCommentIndex), this._film.comments.slice(filmCommentIndex + 1));
   }
 
   _popupEscKeyDownHandler(evt) {

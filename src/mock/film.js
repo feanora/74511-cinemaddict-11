@@ -162,7 +162,7 @@ const generateId = () => {
 };
 
 const generateCommentsId = () => {
-  return new Array(getRandomNumber(5)).fill(``).map(() => getRandomNumber(10, 1));
+  return new Array(getRandomNumber(5)).fill(``).map(() => getRandomNumber(100, 1));
 };
 
 export const generateFilmCard = () => {

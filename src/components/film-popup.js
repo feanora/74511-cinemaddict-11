@@ -1,6 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 import {formatDate, getFilmDuration} from "../utils/common.js";
-import {EMOJIS, TimeFormat} from "../const.js";
+import {TimeFormat} from "../const.js";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {

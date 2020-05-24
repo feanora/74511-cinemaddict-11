@@ -11,10 +11,6 @@ export default class Comments {
     this._comments = Array.from(comments);
   }
 
-  getCommentsByIds(ids) {
-    return ids.map((it) => this._comments.find((comment) => comment.id === it));
-  }
-
   deleteComment(id) {
     const index = this._comments.findIndex((it) => it.id === id);
 

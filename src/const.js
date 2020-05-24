@@ -6,7 +6,7 @@ export const FilmCardsCount = {
   MOST_COMMENTED: 2
 };
 
-export const COMMENTS_COUNT = 10;
+export const COMMENTS_COUNT = 100;
 
 export const WatchedFilmsCount = {
   START: 1,

@@ -3,7 +3,7 @@ import moment from "moment";
 
 const createCommentsMarkup = (comments) => {
   return comments.map((comment) => {
-    const {author, comment: text, date, emotion} = comment;
+    const {id, author, comment: text, date, emotion} = comment;
     const commentDate = moment(date).fromNow();
     return (
       `<li class="film-details__comment">
@@ -15,13 +15,14 @@ const createCommentsMarkup = (comments) => {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
             <span class="film-details__comment-day">${commentDate}</span>
-            <button class="film-details__comment-delete">Delete</button>
+            <button class="film-details__comment-delete" data-id="${id}">Delete</button>
           </p>
         </div>
       </li>`
     );
   });
 };
+
 const getCommentsTitle = (commentsCount) => commentsCount > 1 ? `Comments` : `Comment`;
 const createCommentsTemplate = (comments) => {
   const commentsCount = comments.length;
@@ -45,6 +46,8 @@ export default class Comments extends AbstractSmartComponent {
   constructor(comments) {
     super();
     this._comments = comments;
+
+    this._deleteCommentsButtonClickHandler = null;
   }
 
   getTemplate() {
@@ -53,6 +56,15 @@ export default class Comments extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
+  }
+
+  recoveryListeners() {
+    this.setDeleteCommentButtonClickHandler(this._deleteCommentsButtonClickHandler);
+  }
+
+  setDeleteCommentButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__comments-list`).addEventListener(`click`, handler);
+    this._deleteCommentsButtonClickHandler = handler;
   }
 }
 
