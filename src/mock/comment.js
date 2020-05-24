@@ -27,7 +27,7 @@ const MOCK_COMMENT_DATES = [
 let index = 0;
 export const generateComment = () => {
   return {
-    id: ++index,
+    id: String(++index),
     author: getRandomArrayItem(COMMENT_AUTHOR),
     comment: getRandomArrayItem(COMMENT_TEXTS),
     date: getRandomArrayItem(MOCK_COMMENT_DATES),

@@ -37,8 +37,8 @@ const createNewCommentTemplate = (emotion) => {
 export default class NewComment extends AbstractSmartComponent {
   constructor() {
     super();
-    // this._emotion = emotion;
     this._emotion = ``;
+    this._commentSubmitHandler = null;
     this._subscribeOnEvents();
   }
 
@@ -51,6 +51,7 @@ export default class NewComment extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
+    this.setCommentSubmitHandler(this._commentSubmitHandler);
     this._subscribeOnEvents();
   }
 
@@ -65,5 +66,10 @@ export default class NewComment extends AbstractSmartComponent {
       this._emotion = evt.target.value;
       this.rerender();
     });
+  }
+
+  setCommentSubmitHandler(handler) {
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keydown`, handler);
+    this._commentSubmitHandler = handler;
   }
 }

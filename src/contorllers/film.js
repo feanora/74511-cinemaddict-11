@@ -77,9 +77,7 @@ export default class FilmController {
     const newCommentContainerElement = this._commentsComponent.getElement().querySelector(`.film-details__comments-wrap`);
     render(newCommentContainerElement, this._newCommentComponent);
 
-    this._commentsComponent.setDeleteCommentButtonClickHandler((evt) => {
-      this._deleteCommentsButtonClickHandler(evt);
-    });
+    this._setCommentBlockHandlers();
   }
 
   _getFilmComments(comments) {
@@ -120,7 +118,6 @@ export default class FilmController {
   _commentChangeHandler(oldData, newData) {
     if (newData === null) {
       const isSuccess = this._commentsModel.deleteComment(oldData);
-      this._rerenderCommentsBlock();
       if (isSuccess) {
         this._rerenderCommentsBlock();
       }
@@ -128,8 +125,32 @@ export default class FilmController {
 
     if (oldData === null) {
       this._commentsModel.addComment(newData);
-      this._rerenderCommentsBlock();
       this._newCommentComponent.reset();
+      this._rerenderCommentsBlock();
+    }
+  }
+
+  _commentSubmitHandler(evt) {
+    const isCtrlCommandPlusEnter = evt.ctrlKey && evt.key === `Enter` || evt.metaKey && evt.key === `Enter`;
+    if (isCtrlCommandPlusEnter) {
+      const newCommentEmotionElement = this._newCommentComponent.getElement().querySelector(`.film-details__add-emoji-label img`);
+      const newCommentTextValue = this._newCommentComponent.getElement().querySelector(`.film-details__comment-input`).value;
+      const IMG_ALT_PREFIX = `emoji-`;
+
+      if (!newCommentEmotionElement || newCommentTextValue.length === 0) {
+        return;
+      }
+
+      const newComment = {
+        id: String(new Date() + Math.random()),
+        author: `Evil Author`,
+        comment: newCommentTextValue,
+        date: new Date(),
+        emotion: newCommentEmotionElement.alt.substring(IMG_ALT_PREFIX.length)
+      };
+
+      this._film.comments = [].concat(newComment.id, this._film.comments);
+      this._commentChangeHandler(null, newComment);
     }
   }
 
@@ -149,7 +170,7 @@ export default class FilmController {
   }
 
   _deleteFilmCommentIndex(id) {
-    const filmCommentIndex = this._film.comments.findIndex((it) => it === Number(id));
+    const filmCommentIndex = this._film.comments.findIndex((it) => it === (id));
     this._film.comments = [].concat(this._film.comments.slice(0, filmCommentIndex), this._film.comments.slice(filmCommentIndex + 1));
   }
 
@@ -194,6 +215,16 @@ export default class FilmController {
   _setPopupHandler() {
     this._filmPopupComponent.setPopupCloseElementClickHandler(() => {
       this._closePopup();
+    });
+  }
+
+  _setCommentBlockHandlers() {
+    this._commentsComponent.setDeleteCommentButtonClickHandler((evt) => {
+      this._deleteCommentsButtonClickHandler(evt);
+    });
+
+    this._newCommentComponent.setCommentSubmitHandler((evt) => {
+      this._commentSubmitHandler(evt);
     });
   }
 }
