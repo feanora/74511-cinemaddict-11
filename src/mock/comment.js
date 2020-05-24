@@ -24,13 +24,14 @@ const MOCK_COMMENT_DATES = [
   `2019-05-12T00:43:00.930Z`,
   `2020-03-15T08:28:00.930Z`
 ];
-
+let index = 0;
 export const generateComment = () => {
   return {
-    emoji: getRandomArrayItem(COMMENT_EMOTIONS),
-    text: getRandomArrayItem(COMMENT_TEXTS),
+    id: String(++index),
     author: getRandomArrayItem(COMMENT_AUTHOR),
-    day: getRandomArrayItem(MOCK_COMMENT_DATES)
+    comment: getRandomArrayItem(COMMENT_TEXTS),
+    date: getRandomArrayItem(MOCK_COMMENT_DATES),
+    emotion: getRandomArrayItem(COMMENT_EMOTIONS)
   };
 };
 

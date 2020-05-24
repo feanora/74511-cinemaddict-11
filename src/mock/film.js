@@ -9,6 +9,7 @@ const FILM_TITLES = [
   `The Great Flamarion`,
   `Made for Each Other`
 ];
+
 const ALTERNATIVE_TITLES = [
   `Burlesque`,
   `An Innocent Man`,
@@ -19,6 +20,7 @@ const ALTERNATIVE_TITLES = [
   `Made for Each Other`
 ];
 const POSTERS_PATH = `./images/posters/`;
+
 const POSTER_IMAGES = [
   `the-dance-of-life.jpg`,
   `sagebrush-trail.jpg`,
@@ -28,6 +30,7 @@ const POSTER_IMAGES = [
   `the-great-flamarion.jpg`,
   `made-for-each-other.png`
 ];
+
 const AGE_RATINGS = [
   `0+`,
   `6+`,
@@ -35,6 +38,7 @@ const AGE_RATINGS = [
   `16+`,
   `18+`
 ];
+
 const DIRECTORS = [
   `John Cromwell`,
   `Armand Schaefer`,
@@ -44,6 +48,7 @@ const DIRECTORS = [
   `Anthony Mann`,
   `John Cromwell`
 ];
+
 const WRITERS = [
   `Benjamin Glazer`,
   `Julian Johnson`,
@@ -56,6 +61,7 @@ const WRITERS = [
   `Jo Swerling`,
   `Frank Ryan`
 ];
+
 const ACTORS = [
   `Hal Skelly`,
   `Nancy Carroll`,
@@ -73,6 +79,7 @@ const ACTORS = [
   `Dan Duryea`,
   `Carole Lombard`
 ];
+
 const MOCK_DATES = [
   `1960-04-08T08:28:00.929Z`,
   `2017-12-05T14:44:55.559Z`,
@@ -80,6 +87,14 @@ const MOCK_DATES = [
   `2019-12-24T08:28:00.930Z`,
   `2003-11-19T02:09:13.015Z`,
 ];
+
+const MOCK_WATCHING_DATES = [
+  `2020-05-15T01:16:00`,
+  `2020-04-15T23:55:00.930Z`,
+  `2019-05-12T00:43:00.930Z`,
+  `2020-03-15T08:28:00.930Z`
+];
+
 const RELEASE_COUNTRIES = [
   `USA`,
   `Italy`,
@@ -89,6 +104,7 @@ const RELEASE_COUNTRIES = [
   `Finland`,
   `Russia`
 ];
+
 const GENRES = [
   `Action`,
   `Adventure`,
@@ -109,18 +125,22 @@ const FilmRatingValue = {
   MIN: 1,
   MAX: 10
 };
+
 const WritersCount = {
   MIN: 2,
   MAX: 3
 };
+
 const ActorsCount = {
   MIN: 2,
   MAX: 6
 };
+
 const SentencesCount = {
   MIN: 1,
   MAX: 5
 };
+
 const MAX_GENRES_COUNT = 3;
 
 const generatePosterTitle = (path, images) => {
@@ -137,8 +157,17 @@ const generateRuntime = () => {
   return getRandomNumber(240, 9);
 };
 
+const generateId = () => {
+  return String(new Date() + Math.random());
+};
+
+const generateCommentsId = () => {
+  return new Array(getRandomNumber(5)).fill(``).map(() => String(getRandomNumber(100, 1)));
+};
+
 export const generateFilmCard = () => {
   return {
+    id: generateId(),
     title: getRandomArrayItem(FILM_TITLES),
     alternativeTitle: getRandomArrayItem(ALTERNATIVE_TITLES),
     totalRating: getRandomFloatNumber(ROUND_DIGIT_COUNT, FilmRatingValue.MAX, FilmRatingValue.MIN),
@@ -154,8 +183,9 @@ export const generateFilmCard = () => {
     description: generateFilmDescription(),
     watchlist: getBooleanValue(),
     alreadyWatched: getBooleanValue(),
+    watchingDate: getRandomArrayItem(MOCK_WATCHING_DATES),
     favorite: getBooleanValue(),
-    commentsCount: getRandomNumber(5, 1)
+    comments: generateCommentsId()
   };
 };
 

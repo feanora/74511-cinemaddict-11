@@ -1,7 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
 import {formatDate, getFilmDuration} from "../utils/common.js";
-import {EMOJIS, TimeFormat} from "../const.js";
-
+import {TimeFormat} from "../const.js";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -24,29 +23,12 @@ const createButtonMarkup = (name, isChecked) => {
   );
 };
 
-const createAddEmojiMarkup = (emotion) => {
-  return emotion ? `<img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">` : ``;
-};
-
-const createEmojiListMarkup = () => {
-  return EMOJIS.map((emotion) => {
-    return (
-      `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emotion}" value="${emotion}">
-        <label class="film-details__emoji-label" for="emoji-${emotion}">
-          <img src="./images/emoji/${emotion}.png" width="30" height="30" alt="emoji">
-        </label>`
-    );
-  }).join(`\n`);
-};
-
 const getGenreTitle = (genres) => genres.length > 1 ? `Genres` : `Genre`;
-const getCommentsTitle = (commentsCount) => commentsCount > 1 ? `Comments` : `Comment`;
 
-const createFilmPopupTemplate = (film, emotion) => {
-  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseCountry, genres, description, commentsCount} = film;
+const createFilmPopupTemplate = (film) => {
+  const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseCountry, genres, description} = film;
   const genresMarkup = createGenresMarkup(genres);
   const genresTitle = getGenreTitle(genres);
-  const commentsTitle = getCommentsTitle(commentsCount);
   const addWatchListButton = createButtonMarkup(`watchlist`, film.watchlist);
   const watchedButton = createButtonMarkup(`watched`, film.alreadyWatched);
   const favoriteButton = createButtonMarkup(`favorite`, film.favorite);
@@ -123,28 +105,7 @@ const createFilmPopupTemplate = (film, emotion) => {
       </section>
     </div>
 
-    <div class="form-details__bottom-container">
-      <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">${commentsTitle} <span class="film-details__comments-count">${commentsCount}</span></h3>
 
-        <ul class="film-details__comments-list">
-        </ul>
-
-        <div class="film-details__new-comment">
-          <div for="add-emoji" class="film-details__add-emoji-label">
-            ${createAddEmojiMarkup(emotion)}
-           </div>
-
-          <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
-          </label>
-
-          <div class="film-details__emoji-list">
-            ${createEmojiListMarkup()}
-          </div>
-        </div>
-      </section>
-    </div>
   </form>
 </section>`
   );
@@ -155,10 +116,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     super();
     this._film = film;
     this._closeClickHandler = null;
-    this._addWatchListChangeHandler = null;
-    this._WatchedChangeHandler = null;
-    this._favoriteChangeHandler = null;
-    this._emotion = ``;
+
     this._subscribeOnEvents();
   }
 
@@ -168,9 +126,7 @@ export default class FilmPopup extends AbstractSmartComponent {
 
   recoveryListeners() {
     this.setPopupCloseElementClickHandler(this._closeClickHandler);
-    this.setAddWatchListButtonChangeHandler(this._addWatchListChangeHandler);
-    this.setWatchedButtonChangeHandler(this._WatchedChangeHandler);
-    this.setFavoriteButtonChangeHandler(this._favoriteChangeHandler);
+
     this._subscribeOnEvents();
   }
 
@@ -183,31 +139,18 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._closeClickHandler = handler;
   }
 
-  setAddWatchListButtonChangeHandler(handler) {
-    this.getElement().querySelector(`#watchlist`).addEventListener(`change`, handler);
-    this._addWatchListChangeHandler = handler;
-  }
-
-  setWatchedButtonChangeHandler(handler) {
-    this.getElement().querySelector(`#watched`).addEventListener(`change`, handler);
-    this._WatchedChangeHandler = handler;
-  }
-
-  setFavoriteButtonChangeHandler(handler) {
-    this.getElement().querySelector(`#favorite`).addEventListener(`change`, handler);
-    this._favoriteChangeHandler = handler;
-  }
-
-  reset() {
-    this._emotion = ``;
-    this.rerender();
-  }
-
   _subscribeOnEvents() {
     const element = this.getElement();
-    element.querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
-      this._emotion = evt.target.value;
-      this.rerender();
+    element.querySelector(`#watchlist`).addEventListener(`change`, () => {
+      this._film.watchlist = !this._film.watchlist;
+    });
+
+    element.querySelector(`#watched`).addEventListener(`change`, () => {
+      this._film.alreadyWatched = !this._film.alreadyWatched;
+    });
+
+    element.querySelector(`#favorite`).addEventListener(`change`, () => {
+      this._film.favorite = !this._film.favorite;
     });
   }
 }

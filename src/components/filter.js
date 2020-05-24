@@ -1,11 +1,12 @@
 import AbstractComponent from "./abstract-component.js";
 
 const ACTIVE_FILTER_INDEX = 0;
+const FILTER_HREF_PREFIX = `#`;
 
-const createFilterMarkup = (filter, isActive) => {
-  const {name, count} = filter;
+const createFilterMarkup = (filter, isAllFilms) => {
+  const {type, name, count, isActive} = filter;
   return (
-    `<a href="#${isActive ? `all` : name.toLowerCase()}" class="main-navigation__item ${isActive ? `main-navigation__item--active` : ``}">${name } ${isActive ? `` : `<span class="main-navigation__item-count">${count}</span>`}</a>`
+    `<a href="#${type}" class="main-navigation__item${isActive ? ` main-navigation__item--active` : ``}">${name} ${isAllFilms ? `` : `<span class="main-navigation__item-count">${count}</span>`}</a>`
   );
 };
 
@@ -27,6 +28,15 @@ export default class Filter extends AbstractComponent {
   getTemplate() {
     return createFilterTemplate(this._filter);
   }
-}
 
+  setFilterChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      if (evt.target.tagName === `A` || evt.target.parentElement.tagName === `A`) {
+        evt.preventDefault();
+        const activeFilter = evt.target.tagName === `A` ? evt.target.getAttribute(`href`).substring(FILTER_HREF_PREFIX.length) : evt.target.parentElement.getAttribute(`href`).substring(FILTER_HREF_PREFIX.length);
+        handler(activeFilter);
+      }
+    });
+  }
+}
 
