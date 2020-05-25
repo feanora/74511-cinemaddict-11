@@ -1,4 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component";
+import Chart from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 const createStatisticsTemplate = () => {
   return (
