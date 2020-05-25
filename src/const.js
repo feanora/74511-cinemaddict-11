@@ -22,21 +22,6 @@ export const SortType = {
 
 export const MAX_SHORT_DESCRIPTION_LENGTH = 140;
 
-export const MONTH_NAMES = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
-];
-
 export const FILTER_NAMES = [
   `All movies`,
   `Watchlist`,
@@ -85,3 +70,5 @@ export const TimeFormat = {
   RELEASE_DATE: `DD MMMM YYYY`,
   RUNTIME: `h[h] mm[m]`
 };
+
+export const HIDDEN_CLASS = `visually-hidden`;

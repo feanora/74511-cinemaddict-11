@@ -40,6 +40,17 @@ export default class PageController {
     this._sortComponent.setSortTypeChangeHandler(this._sortTypeChangeHandler);
     this._filmsModel.setFilterChangeHandler(this._filterChangeHandler);
   }
+
+  hide() {
+    this._sortComponent.hide();
+    this._filmsBlockComponent.hide();
+  }
+
+  show() {
+    this._sortComponent.show();
+    this._filmsBlockComponent.show();
+  }
+
   render() {
     render(this._container, this._sortComponent);
 
