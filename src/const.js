@@ -72,3 +72,8 @@ export const TimeFormat = {
 };
 
 export const HIDDEN_CLASS = `visually-hidden`;
+
+export const MenuItem = {
+  FILMS: `films`,
+  STATISTICS: `statistics`
+};

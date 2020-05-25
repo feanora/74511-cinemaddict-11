@@ -1,4 +1,5 @@
 import AbstractComponent from "./abstract-component.js";
+import {MenuItem} from "../const.js";
 
 const ACTIVE_FILTER_INDEX = 0;
 const FILTER_HREF_PREFIX = `#`;
@@ -6,7 +7,7 @@ const FILTER_HREF_PREFIX = `#`;
 const createFilterMarkup = (filter, isAllFilms) => {
   const {type, name, count, isActive} = filter;
   return (
-    `<a href="#${type}" class="main-navigation__item${isActive ? ` main-navigation__item--active` : ``}">${name} ${isAllFilms ? `` : `<span class="main-navigation__item-count">${count}</span>`}</a>`
+    `<a href="#${type}" data-menu="${MenuItem.FILMS}" class="main-navigation__item${isActive ? ` main-navigation__item--active` : ``}">${name} ${isAllFilms ? `` : `<span class="main-navigation__item-count">${count}</span>`}</a>`
   );
 };
 

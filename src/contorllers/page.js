@@ -47,6 +47,7 @@ export default class PageController {
   }
 
   show() {
+    this._sortComponent.resetSortType();
     this._sortComponent.show();
     this._filmsBlockComponent.show();
   }
