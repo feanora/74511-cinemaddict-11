@@ -7,6 +7,7 @@ export const FilmCardsCount = {
 };
 
 export const COMMENTS_COUNT = 100;
+export const USER_AVATAR_PATH = `./images/bitmap@2x.png`;
 
 export const WatchedFilmsCount = {
   START: 1,
@@ -34,6 +35,22 @@ export const FilterType = {
   WATCHLIST: `watchlist`,
   HISTORY: `history`,
   FAVORITES: `favorites`
+};
+
+export const STATISTICS_FILTER_NAMES = [
+  `All time`,
+  `Today`,
+  `Week`,
+  `Month`,
+  `Year`
+];
+
+export const StatisticsFilterType = {
+  ALL: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`
 };
 
 export const UserRating = {

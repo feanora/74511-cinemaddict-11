@@ -47,6 +47,11 @@ export const getFilmDuration = (runtime) => {
   return moment.duration(runtime, `minutes`).format(TimeFormat.RUNTIME);
 };
 
+export const getTotalFilmDurationInHours = (time) => {
+  momentDurationFormatSetup(moment);
+  return moment.duration(time, `minutes`).format(TimeFormat.HOUR);
+};
+
 export const getUserRating = (watchedFilmsCount) => {
   switch (true) {
     case (watchedFilmsCount >= WatchedFilmsCount.START && watchedFilmsCount <= WatchedFilmsCount.NOVICE_MAX):

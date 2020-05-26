@@ -7,7 +7,6 @@ import PageController from "./contorllers/page.js";
 import StatisticsComponent from "./components/statistics.js";
 import UserProfileComponent from "./components/user-profile.js";
 import {generateFilmCards} from "./mock/film.js";
-import {generateUserProfile} from "./mock/user-profile.js";
 import {FilmCardsCount, COMMENTS_COUNT} from "./const.js";
 import {render} from "./utils/render.js";
 import {generateComments} from "./mock/comment.js";
@@ -17,17 +16,15 @@ const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector((`.main`));
 const siteFooterElement = document.querySelector(`.footer`);
 
-const user = generateUserProfile();
+const films = generateFilmCards(FilmCardsCount.ALL);
+const filmsModel = new FilmsModel();
+filmsModel.setFilms(films);
 
 const comments = generateComments(COMMENTS_COUNT);
 const commentsModel = new CommentsModel();
 commentsModel.setComments(comments);
 
-const films = generateFilmCards(FilmCardsCount.ALL);
-const filmsModel = new FilmsModel();
-filmsModel.setFilms(films);
-
-render(siteHeaderElement, new UserProfileComponent(user));
+render(siteHeaderElement, new UserProfileComponent(filmsModel));
 const mainMenuComponent = new MainMenuComponent();
 render(siteMainElement, mainMenuComponent);
 
@@ -39,8 +36,9 @@ pageController.render(films);
 
 const statisticsComponent = new StatisticsComponent(filmsModel);
 render(siteMainElement, statisticsComponent);
+statisticsComponent.hide();
 
-render(siteFooterElement, new FooterStatisticsComponent(FilmCardsCount.ALL));
+render(siteFooterElement, new FooterStatisticsComponent(filmsModel));
 
 mainMenuComponent.setChangeMenuHandler((menuItem) => {
   switch (menuItem) {

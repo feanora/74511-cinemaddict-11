@@ -166,6 +166,8 @@ const generateCommentsId = () => {
 };
 
 export const generateFilmCard = () => {
+  const alreadyWatched = getBooleanValue();
+  const watchingDate = alreadyWatched ? getRandomArrayItem(MOCK_WATCHING_DATES) : null;
   return {
     id: generateId(),
     title: getRandomArrayItem(FILM_TITLES),
@@ -182,8 +184,8 @@ export const generateFilmCard = () => {
     genres: getNewLengthShuffleArray(GENRES, MAX_GENRES_COUNT),
     description: generateFilmDescription(),
     watchlist: getBooleanValue(),
-    alreadyWatched: getBooleanValue(),
-    watchingDate: getRandomArrayItem(MOCK_WATCHING_DATES),
+    alreadyWatched,
+    watchingDate,
     favorite: getBooleanValue(),
     comments: generateCommentsId()
   };
