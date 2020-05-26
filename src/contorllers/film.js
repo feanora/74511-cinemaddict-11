@@ -193,6 +193,7 @@ export default class FilmController {
     this._filmCardComponent.setWatchedButtonClickHandler(() => {
       this._dataChangeHandler(this, film, Object.assign({}, film, {
         alreadyWatched: !film.alreadyWatched,
+        watchingDate: this._film.watchingDate ? null : new Date()
       }));
     });
 

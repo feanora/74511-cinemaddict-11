@@ -7,6 +7,7 @@ export const FilmCardsCount = {
 };
 
 export const COMMENTS_COUNT = 100;
+export const USER_AVATAR_PATH = `./images/bitmap@2x.png`;
 
 export const WatchedFilmsCount = {
   START: 1,
@@ -22,21 +23,6 @@ export const SortType = {
 
 export const MAX_SHORT_DESCRIPTION_LENGTH = 140;
 
-export const MONTH_NAMES = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
-];
-
 export const FILTER_NAMES = [
   `All movies`,
   `Watchlist`,
@@ -49,6 +35,22 @@ export const FilterType = {
   WATCHLIST: `watchlist`,
   HISTORY: `history`,
   FAVORITES: `favorites`
+};
+
+export const STATISTICS_FILTER_NAMES = [
+  `All time`,
+  `Today`,
+  `Week`,
+  `Month`,
+  `Year`
+];
+
+export const StatisticsFilterType = {
+  ALL: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`
 };
 
 export const UserRating = {
@@ -84,4 +86,11 @@ export const TimeFormat = {
   RELEASE_YEAR: `YYYY`,
   RELEASE_DATE: `DD MMMM YYYY`,
   RUNTIME: `h[h] mm[m]`
+};
+
+export const HIDDEN_CLASS = `visually-hidden`;
+
+export const MenuItem = {
+  FILMS: `films`,
+  STATISTICS: `statistics`
 };

@@ -9,13 +9,13 @@ const createFooterStatisticsTemplate = (allFilmCount) => {
 };
 
 export default class FooterStatistics extends AbstractComponent {
-  constructor(allFilmCount) {
+  constructor(filmsModel) {
     super();
-    this._allFilmCount = allFilmCount;
+    this._filmsModel = filmsModel;
   }
 
   getTemplate() {
-    return createFooterStatisticsTemplate(this._allFilmCount);
+    return createFooterStatisticsTemplate(this._filmsModel.getFilmsAll().length);
   }
 }
 

@@ -31,14 +31,14 @@ const createCommentsTemplate = (comments) => {
   return (
     `<div class="form-details__bottom-container">
         <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">${commentsTitle} <span class="film-details__comments-count">${commentsCount}</span></h3>
+            <h3 class="film-details__comments-title">${commentsTitle} <span class="film-details__comments-count">${commentsCount}</span></h3>
 
-      <ul class="film-details__comments-list">
-      ${commentsList}
-        </ul>
+            <ul class="film-details__comments-list">
+              ${commentsList}
+            </ul>
 
         </section>
-        </div>`
+    </div>`
   );
 };
 
