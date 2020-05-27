@@ -18,11 +18,10 @@ const siteFooterElement = document.querySelector(`.footer`);
 const api = new API(AUTHORIZATION);
 const filmsModel = new FilmsModel();
 
-const comments = generateComments(COMMENTS_COUNT);
+//const comments = generateComments(COMMENTS_COUNT);
 const commentsModel = new CommentsModel();
-commentsModel.setComments(comments);
+//commentsModel.setComments(comments);
 
-render(siteHeaderElement, new UserProfileComponent(filmsModel));
 const mainMenuComponent = new MainMenuComponent();
 render(siteMainElement, mainMenuComponent);
 
@@ -34,8 +33,6 @@ const pageController = new PageController(siteMainElement, filmsModel, commentsM
 const statisticsComponent = new StatisticsComponent(filmsModel);
 render(siteMainElement, statisticsComponent);
 statisticsComponent.hide();
-
-render(siteFooterElement, new FooterStatisticsComponent(filmsModel));
 
 mainMenuComponent.setChangeMenuHandler((menuItem) => {
   switch (menuItem) {
@@ -53,6 +50,8 @@ mainMenuComponent.setChangeMenuHandler((menuItem) => {
 api.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
-    pageController.render(films);
+    render(siteHeaderElement, new UserProfileComponent(filmsModel));
+    pageController.render();
+    render(siteFooterElement, new FooterStatisticsComponent(filmsModel));
   });
 

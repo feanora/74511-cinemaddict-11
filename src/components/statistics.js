@@ -74,7 +74,12 @@ const createStatisticsTemplate = (films, activeFilter) => {
   const uniqueGenres = getUniqueGenres(getAllGenresAllFilms(films));
   const allGenres = getAllGenresAllFilms(films);
   const filmsCountOfEachGenre = getFilmCountOfEachGenre(uniqueGenres, allGenres);
-  const topGenre = filmsCountOfEachGenre[0][`genre`] || ``;
+
+  let topGenre = ``;
+
+  if (filmsCountOfEachGenre[0]) {
+    topGenre = filmsCountOfEachGenre[0] [`genre`];
+  }
 
   return (
     `<section class="statistic">

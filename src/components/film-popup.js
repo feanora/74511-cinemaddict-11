@@ -17,7 +17,16 @@ const createButtonMarkup = (name, isChecked) => {
   );
 };
 
-const getGenreTitle = (genres) => genres.length > 1 ? `Genres` : `Genre`;
+const getGenreTitle = (genres) => {
+  switch (genres.length) {
+    case genres.length > 1:
+      return `Genres`;
+    case genres.length === 1:
+      return `Genre`;
+    default:
+      return ``;
+  }
+};
 
 const createFilmPopupTemplate = (film) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseCountry, genres, description} = film;

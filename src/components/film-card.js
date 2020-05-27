@@ -14,7 +14,7 @@ const createButtonMarkup = (name, isActive = true) => {
 
 const createFilmCardTemplate = (film) => {
   const {title, totalRating, poster, genres, description} = film;
-  const genre = genres[0];
+  const genre = genres[0] ? genres[0] : ``;
   const releaseYear = formatDate(film.releaseDate, TimeFormat.RELEASE_YEAR);
   const filmRuntime = getFilmDuration(film.runtime);
   const commentsCount = film.comments.length;

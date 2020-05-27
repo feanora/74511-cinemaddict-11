@@ -1,7 +1,6 @@
 export const AUTHORIZATION = `Basic gioejohvbefp3owwpo5ew55`;
 
 export const FilmCardsCount = {
-  ALL: 22,
   SHOWING: 5,
   BY_BUTTON: 5,
   TOP_RATED: 2,
