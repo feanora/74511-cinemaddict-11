@@ -2,13 +2,13 @@ import CommentsModel from "../models/comments.js";
 import FilmController from "./film.js";
 import FilmsBlockComponent from "../components/films-block.js";
 import FilmsExtraBlockComponent from "../components/films-extra-block.js";
+import Load from "../components/load.js";
 import NoFilmsBlockComponent from "../components/no-films-block.js";
 import ShowMoreButtonComponent from "../components/show-more-button.js";
 import SortComponent from "../components/sort.js";
 import {getSortedFilms} from "../utils/common.js";
 import {remove, render} from "../utils/render.js";
 import {ExtraFilmsTitles, FilmCardsCount} from "../const.js";
-
 
 const renderFilmsList = (filmsContainer, films, commentsModel, dataChangeHandler, viewChangeHandler, api) => {
   return films.map((film) => {
@@ -32,6 +32,7 @@ export default class PageController {
 
     this._sortComponent = new SortComponent();
     this._filmsBlockComponent = new FilmsBlockComponent();
+    this._loadingFilmsComponent = new Load();
     this._noFilmsBlockComponent = new NoFilmsBlockComponent();
     this._showMoreButtonComponent = new ShowMoreButtonComponent();
 
@@ -58,8 +59,13 @@ export default class PageController {
 
   render() {
     render(this._container, this._sortComponent);
+    render(this._container, this._loadingFilmsComponent);
 
     const films = this._filmsModel.getFilms();
+
+    if (films) {
+      this._loadingFilmsComponent.getElement().remove();
+    }
 
     if (!films.length) {
       render(this._container, this._noFilmsBlockComponent);
