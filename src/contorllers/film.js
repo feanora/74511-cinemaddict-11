@@ -1,15 +1,18 @@
-import {remove, render, replace} from "../utils/render.js";
 import CommentsComponent from "../components/comments.js";
-import NewCommentComponent from "../components/new-comment.js";
 import FilmCardComponent from "../components/film-card.js";
+import FilmModel from "../models/film.js";
 import FilmPopupComponent from "../components/film-popup.js";
+import NewCommentComponent from "../components/new-comment.js";
+import {remove, render, replace} from "../utils/render.js";
 import {RenderPosition, Mode} from "../const.js";
 import {encode} from "he";
+
 
 export default class FilmController {
   constructor(container, commentsModel, dataChangeHandler, viewChangeHandler) {
     this._container = container;
     this._commentsModel = commentsModel;
+
     this._film = null;
 
     this._mode = Mode.DEFAULT;
@@ -64,8 +67,7 @@ export default class FilmController {
   }
 
   _renderCommentsBlock() {
-    const allComments = this._commentsModel.getComments();
-    const filmComments = this._getFilmComments(allComments);
+    const filmComments = this._commentsModel.getComments();
 
     this._commentsComponent = new CommentsComponent(filmComments);
     const commentsContainer = this._filmPopupComponent.getElement().querySelector(`.film-details__inner`);
@@ -114,6 +116,11 @@ export default class FilmController {
     this._newCommentComponent.reset();
 
     this._dataChangeHandler(this, this._film, this._film);
+  }
+
+  _deleteFilmCommentIndex(id) {
+    const filmCommentIndex = this._film.comments.findIndex((it) => it === (id));
+    this._film.comments = [].concat(this._film.comments.slice(0, filmCommentIndex), this._film.comments.slice(filmCommentIndex + 1));
   }
 
   _commentChangeHandler(oldData, newData) {
@@ -171,11 +178,6 @@ export default class FilmController {
     this._commentChangeHandler(commentId, null);
   }
 
-  _deleteFilmCommentIndex(id) {
-    const filmCommentIndex = this._film.comments.findIndex((it) => it === (id));
-    this._film.comments = [].concat(this._film.comments.slice(0, filmCommentIndex), this._film.comments.slice(filmCommentIndex + 1));
-  }
-
   _popupEscKeyDownHandler(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
     if (isEscKey) {
@@ -184,23 +186,26 @@ export default class FilmController {
   }
 
   _setFilmCardChangeHandlers(film) {
-    this._filmCardComponent.setAddWatchListButtonClickHandler(() => {
-      this._dataChangeHandler(this, film, Object.assign({}, film, {
-        watchlist: !film.watchlist,
-      }));
+    this._filmCardComponent.setAddWatchListButtonClickHandler((evt) => {
+      evt.preventDefault();
+      const updatedFilm = FilmModel.clone(film);
+      updatedFilm.watchlist = !film.watchlist;
+      this._dataChangeHandler(this, film, updatedFilm);
     });
 
-    this._filmCardComponent.setWatchedButtonClickHandler(() => {
-      this._dataChangeHandler(this, film, Object.assign({}, film, {
-        alreadyWatched: !film.alreadyWatched,
-        watchingDate: this._film.watchingDate ? null : new Date()
-      }));
+    this._filmCardComponent.setWatchedButtonClickHandler((evt) => {
+      evt.preventDefault();
+      const updatedFilm = FilmModel.clone(film);
+      updatedFilm.alreadyWatched = !film.alreadyWatched;
+      updatedFilm.watchingDate = film.watchingDate ? null : new Date();
+      this._dataChangeHandler(this, film, updatedFilm);
     });
 
-    this._filmCardComponent.setFavoriteButtonClickHandler(() => {
-      this._dataChangeHandler(this, film, Object.assign({}, film, {
-        favorite: !film.favorite,
-      }));
+    this._filmCardComponent.setFavoriteButtonClickHandler((evt) => {
+      evt.preventDefault();
+      const updatedFilm = FilmModel.clone(film);
+      updatedFilm.favorite = !film.favorite;
+      this._dataChangeHandler(this, film, updatedFilm);
     });
   }
 

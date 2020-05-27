@@ -1,11 +1,10 @@
-import AbstractSmartComponent from "./abstract-smart-component";
-import {StatisticsFilterType} from "../const.js";
-import {STATISTICS_FILTER_NAMES} from "../const";
-import {getWatchedFilms} from "../utils/filter.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 import {getUserRating} from "../utils/common.js";
-import moment from "moment";
+import {getWatchedFilms} from "../utils/filter.js";
+import {STATISTICS_FILTER_NAMES, StatisticsFilterType} from "../const.js";
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import moment from "moment";
 
 const getTotalDuration = (films) => {
   return films.reduce((acc, film) => {
@@ -75,7 +74,12 @@ const createStatisticsTemplate = (films, activeFilter) => {
   const uniqueGenres = getUniqueGenres(getAllGenresAllFilms(films));
   const allGenres = getAllGenresAllFilms(films);
   const filmsCountOfEachGenre = getFilmCountOfEachGenre(uniqueGenres, allGenres);
-  const topGenre = filmsCountOfEachGenre[0][`genre`] || ``;
+
+  let topGenre = ``;
+
+  if (filmsCountOfEachGenre[0]) {
+    topGenre = filmsCountOfEachGenre[0] [`genre`];
+  }
 
   return (
     `<section class="statistic">
@@ -194,6 +198,7 @@ const renderChart = (statisticCtx, films) => {
 export default class Statistics extends AbstractSmartComponent {
   constructor(filmsModel) {
     super();
+
     this._filmsModel = filmsModel;
     this._activeStatisticsFilm = StatisticsFilterType.ALL;
 
@@ -205,6 +210,24 @@ export default class Statistics extends AbstractSmartComponent {
 
   getTemplate() {
     return createStatisticsTemplate(this._filmsModel.getFilmsAll(), this._activeStatisticsFilm);
+  }
+
+  recoveryListeners() {
+    this._setFilterChangeHandler();
+  }
+
+  rerender() {
+    super.rerender();
+
+    this._renderChart();
+  }
+
+  show() {
+    super.show();
+
+    this._activeStatisticsFilm = StatisticsFilterType.ALL;
+
+    this.rerender();
   }
 
   _renderChart() {
@@ -221,24 +244,6 @@ export default class Statistics extends AbstractSmartComponent {
       this._chart.destroy();
       this._chart = null;
     }
-  }
-
-  show() {
-    super.show();
-
-    this._activeStatisticsFilm = StatisticsFilterType.ALL;
-
-    this.rerender();
-  }
-
-  recoveryListeners() {
-    this._setFilterChangeHandler();
-  }
-
-  rerender() {
-    super.rerender();
-
-    this._renderChart();
   }
 
   _setFilterChangeHandler() {

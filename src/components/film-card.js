@@ -1,15 +1,9 @@
 import AbstractComponent from "./abstract-component.js";
-import {MAX_SHORT_DESCRIPTION_LENGTH, TimeFormat} from "../const.js";
 import {formatDate, getFilmDuration} from "../utils/common.js";
+import {FilmCardButtonName, MAX_SHORT_DESCRIPTION_LENGTH, TimeFormat} from "../const.js";
 
 const getShortDescriptionFilm = (description) => {
   return description.length > MAX_SHORT_DESCRIPTION_LENGTH ? description.slice(0, MAX_SHORT_DESCRIPTION_LENGTH - 1) + `...` : description;
-};
-
-const FilmCardButtonName = {
-  "add-to-watchlist": `Add to watchlist`,
-  "mark-as-watched": `Mark as watched`,
-  "favorite": `Mark as favorite`
 };
 
 const createButtonMarkup = (name, isActive = true) => {
@@ -20,7 +14,7 @@ const createButtonMarkup = (name, isActive = true) => {
 
 const createFilmCardTemplate = (film) => {
   const {title, totalRating, poster, genres, description} = film;
-  const genre = genres[0];
+  const genre = genres[0] ? genres[0] : ``;
   const releaseYear = formatDate(film.releaseDate, TimeFormat.RELEASE_YEAR);
   const filmRuntime = getFilmDuration(film.runtime);
   const commentsCount = film.comments.length;
@@ -52,6 +46,7 @@ const createFilmCardTemplate = (film) => {
 export default class FilmCard extends AbstractComponent {
   constructor(film) {
     super();
+
     this._film = film;
   }
 

@@ -11,6 +11,7 @@ const createFooterStatisticsTemplate = (allFilmCount) => {
 export default class FooterStatistics extends AbstractComponent {
   constructor(filmsModel) {
     super();
+
     this._filmsModel = filmsModel;
   }
 

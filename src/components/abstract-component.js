@@ -21,10 +21,6 @@ export default class AbstractComponent {
     return this._element;
   }
 
-  removeElement() {
-    this._element = null;
-  }
-
   show() {
     if (this._element) {
       this._element.classList.remove(HIDDEN_CLASS);
@@ -35,5 +31,9 @@ export default class AbstractComponent {
     if (this._element) {
       this._element.classList.add(HIDDEN_CLASS);
     }
+  }
+
+  removeElement() {
+    this._element = null;
   }
 }

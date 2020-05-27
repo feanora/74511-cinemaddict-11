@@ -45,6 +45,7 @@ const createCommentsTemplate = (comments) => {
 export default class Comments extends AbstractSmartComponent {
   constructor(comments) {
     super();
+
     this._comments = comments;
 
     this._deleteCommentsButtonClickHandler = null;
@@ -54,12 +55,12 @@ export default class Comments extends AbstractSmartComponent {
     return createCommentsTemplate(this._comments);
   }
 
-  rerender() {
-    super.rerender();
-  }
-
   recoveryListeners() {
     this.setDeleteCommentButtonClickHandler(this._deleteCommentsButtonClickHandler);
+  }
+
+  rerender() {
+    super.rerender();
   }
 
   setDeleteCommentButtonClickHandler(handler) {

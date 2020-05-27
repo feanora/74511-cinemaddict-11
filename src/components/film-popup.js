@@ -1,6 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
-import {formatDate, getFilmDuration} from "../utils/common.js";
-import {TimeFormat} from "../const.js";
+import {getFilmDuration, formatDate} from "../utils/common.js";
+import {FilmPopupButtonName, TimeFormat} from "../const.js";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -10,12 +10,6 @@ const createGenresMarkup = (genres) => {
   }).join(`\n`);
 };
 
-const FilmPopupButtonName = {
-  watchlist: `Add to watchlist`,
-  watched: `Already watched`,
-  favorite: `Add to favorites`
-};
-
 const createButtonMarkup = (name, isChecked) => {
   return (
     `<input type="checkbox" class="film-details__control-input visually-hidden" id="${name}" name="${name}" ${isChecked ? `checked` : ``}>
@@ -23,7 +17,16 @@ const createButtonMarkup = (name, isChecked) => {
   );
 };
 
-const getGenreTitle = (genres) => genres.length > 1 ? `Genres` : `Genre`;
+const getGenreTitle = (genres) => {
+  switch (true) {
+    case genres.length === 1:
+      return `Genre`;
+    case genres.length === 0:
+      return ``;
+    default:
+      return `Genres`;
+  }
+};
 
 const createFilmPopupTemplate = (film) => {
   const {title, alternativeTitle, totalRating, poster, ageRating, director, writers, actors, releaseCountry, genres, description} = film;
@@ -114,6 +117,7 @@ const createFilmPopupTemplate = (film) => {
 export default class FilmPopup extends AbstractSmartComponent {
   constructor(film) {
     super();
+
     this._film = film;
     this._closeClickHandler = null;
 
@@ -134,11 +138,6 @@ export default class FilmPopup extends AbstractSmartComponent {
     super.rerender();
   }
 
-  setPopupCloseElementClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
-    this._closeClickHandler = handler;
-  }
-
   _subscribeOnEvents() {
     const element = this.getElement();
     element.querySelector(`#watchlist`).addEventListener(`change`, () => {
@@ -152,5 +151,10 @@ export default class FilmPopup extends AbstractSmartComponent {
     element.querySelector(`#favorite`).addEventListener(`change`, () => {
       this._film.favorite = !this._film.favorite;
     });
+  }
+
+  setPopupCloseElementClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
+    this._closeClickHandler = handler;
   }
 }

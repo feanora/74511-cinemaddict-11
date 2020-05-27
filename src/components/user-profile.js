@@ -1,11 +1,11 @@
 import AbstractComponent from "./abstract-component.js";
 import {getUserRating} from "../utils/common.js";
-import {USER_AVATAR_PATH} from "../const";
 import {getWatchedFilms} from "../utils/filter.js";
+import {USER_AVATAR_PATH} from "../const";
 
 const createUserRatingTemplate = (watchedFilmsCount) => {
-  const rating = getUserRating(watchedFilmsCount);
   const avatar = USER_AVATAR_PATH;
+  const rating = getUserRating(watchedFilmsCount);
 
   return (
     `<section class="header__profile profile">
@@ -18,6 +18,7 @@ const createUserRatingTemplate = (watchedFilmsCount) => {
 export default class UserProfile extends AbstractComponent {
   constructor(filmsModel) {
     super();
+
     this._filmsModel = filmsModel;
   }
 

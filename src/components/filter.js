@@ -1,8 +1,5 @@
 import AbstractComponent from "./abstract-component.js";
-import {MenuItem} from "../const.js";
-
-const ACTIVE_FILTER_INDEX = 0;
-const FILTER_HREF_PREFIX = `#`;
+import {ACTIVE_FILTER_INDEX, FILTER_HREF_PREFIX, MenuItem} from "../const.js";
 
 const createFilterMarkup = (filter, isAllFilms) => {
   const {type, name, count, isActive} = filter;
