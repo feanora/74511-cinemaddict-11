@@ -1,10 +1,12 @@
 import CommentsComponent from "../components/comments.js";
 import FilmCardComponent from "../components/film-card.js";
+import FilmModel from "../models/film.js";
 import FilmPopupComponent from "../components/film-popup.js";
 import NewCommentComponent from "../components/new-comment.js";
 import {remove, render, replace} from "../utils/render.js";
 import {RenderPosition, Mode} from "../const.js";
 import {encode} from "he";
+
 
 export default class FilmController {
   constructor(container, commentsModel, dataChangeHandler, viewChangeHandler) {
@@ -184,23 +186,26 @@ export default class FilmController {
   }
 
   _setFilmCardChangeHandlers(film) {
-    this._filmCardComponent.setAddWatchListButtonClickHandler(() => {
-      this._dataChangeHandler(this, film, Object.assign({}, film, {
-        watchlist: !film.watchlist,
-      }));
+    this._filmCardComponent.setAddWatchListButtonClickHandler((evt) => {
+      evt.preventDefault();
+      const updatedFilm = FilmModel.clone(film);
+      updatedFilm.watchlist = !film.watchlist;
+      this._dataChangeHandler(this, film, updatedFilm);
     });
 
-    this._filmCardComponent.setWatchedButtonClickHandler(() => {
-      this._dataChangeHandler(this, film, Object.assign({}, film, {
-        alreadyWatched: !film.alreadyWatched,
-        watchingDate: this._film.watchingDate ? null : new Date()
-      }));
+    this._filmCardComponent.setWatchedButtonClickHandler((evt) => {
+      evt.preventDefault();
+      const updatedFilm = FilmModel.clone(film);
+      updatedFilm.alreadyWatched = !film.alreadyWatched;
+      updatedFilm.watchingDate = film.watchingDate ? null : new Date();
+      this._dataChangeHandler(this, film, updatedFilm);
     });
 
-    this._filmCardComponent.setFavoriteButtonClickHandler(() => {
-      this._dataChangeHandler(this, film, Object.assign({}, film, {
-        favorite: !film.favorite,
-      }));
+    this._filmCardComponent.setFavoriteButtonClickHandler((evt) => {
+      evt.preventDefault();
+      const updatedFilm = FilmModel.clone(film);
+      updatedFilm.favorite = !film.favorite;
+      this._dataChangeHandler(this, film, updatedFilm);
     });
   }
 

@@ -6,14 +6,14 @@ import MainMenuComponent from "./components/main-menu.js";
 import PageController from "./contorllers/page.js";
 import StatisticsComponent from "./components/statistics.js";
 import UserProfileComponent from "./components/user-profile.js";
-import {AUTHORIZATION, MenuItem} from "./const.js";
+import {AUTHORIZATION, END_POINT, MenuItem} from "./const.js";
 import {render} from "./utils/render.js";
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector((`.main`));
 const siteFooterElement = document.querySelector(`.footer`);
 
-const api = new API(AUTHORIZATION);
+const api = new API(END_POINT, AUTHORIZATION);
 const filmsModel = new FilmsModel();
 
 const mainMenuComponent = new MainMenuComponent();

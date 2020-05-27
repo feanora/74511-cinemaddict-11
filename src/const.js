@@ -1,4 +1,12 @@
 export const AUTHORIZATION = `Basic gioejohvbefp3owwpo5ew55`;
+export const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
+
+export const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
 
 export const FilmCardsCount = {
   SHOWING: 5,

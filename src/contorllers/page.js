@@ -61,19 +61,13 @@ export default class PageController {
 
     const films = this._filmsModel.getFilms();
 
-    this._commentsModel = new CommentsModel();
-
     if (!films.length) {
       render(this._container, this._noFilmsBlockComponent);
       return;
     }
 
-    films.forEach((film) => {
-      this._api.getComments(film.id)
-        .then((comments) => {
-          this._commentsModel.setComments(comments);
-        });
-    });
+    this._commentsModel = new CommentsModel();
+    this._getFilmComments(films);
 
     render(this._container, this._filmsBlockComponent);
     const filmsBlockComponent = this._filmsBlockComponent.getElement();
@@ -82,6 +76,15 @@ export default class PageController {
     this._renderShowMoreButton();
 
     this._renderExtraFilmsBlock(filmsBlockComponent);
+  }
+
+  _getFilmComments(films) {
+    films.forEach((film) => {
+      this._api.getComments(film.id)
+        .then((comments) => {
+          this._commentsModel.setComments(comments);
+        });
+    });
   }
 
   _removeFilms() {
@@ -160,11 +163,14 @@ export default class PageController {
   }
 
   _dataChangeHandler(filmController, oldData, newData) {
-    const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
+    this._api.updateFilm(oldData.id, newData)
+      .then((filmModel) => {
+        const isSuccess = this._filmsModel.updateFilm(oldData.id, filmModel);
 
-    if (isSuccess) {
-      filmController.render(newData);
-    }
+        if (isSuccess) {
+          filmController.render(filmModel);
+        }
+      });
   }
 
   _viewChangeHandler() {
