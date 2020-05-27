@@ -65,8 +65,7 @@ export default class FilmController {
   }
 
   _renderCommentsBlock() {
-    const allComments = this._commentsModel.getComments();
-    const filmComments = this._getFilmComments(allComments);
+    const filmComments = this._commentsModel.getComments();
 
     this._commentsComponent = new CommentsComponent(filmComments);
     const commentsContainer = this._filmPopupComponent.getElement().querySelector(`.film-details__inner`);

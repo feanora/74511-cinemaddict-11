@@ -18,13 +18,13 @@ const createButtonMarkup = (name, isChecked) => {
 };
 
 const getGenreTitle = (genres) => {
-  switch (genres.length) {
-    case genres.length > 1:
-      return `Genres`;
+  switch (true) {
     case genres.length === 1:
       return `Genre`;
-    default:
+    case genres.length === 0:
       return ``;
+    default:
+      return `Genres`;
   }
 };
 

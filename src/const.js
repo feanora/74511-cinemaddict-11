@@ -7,8 +7,6 @@ export const FilmCardsCount = {
   MOST_COMMENTED: 2
 };
 
-export const COMMENTS_COUNT = 100;
-
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   AFTEREND: `afterend`,
