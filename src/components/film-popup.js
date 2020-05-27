@@ -1,6 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
-import {formatDate, getFilmDuration} from "../utils/common.js";
-import {TimeFormat} from "../const.js";
+import {getFilmDuration, formatDate} from "../utils/common.js";
+import {FilmPopupButtonName, TimeFormat} from "../const.js";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
@@ -8,12 +8,6 @@ const createGenresMarkup = (genres) => {
       `<span class="film-details__genre">${genre}</span>`
     );
   }).join(`\n`);
-};
-
-const FilmPopupButtonName = {
-  watchlist: `Add to watchlist`,
-  watched: `Already watched`,
-  favorite: `Add to favorites`
 };
 
 const createButtonMarkup = (name, isChecked) => {
@@ -114,6 +108,7 @@ const createFilmPopupTemplate = (film) => {
 export default class FilmPopup extends AbstractSmartComponent {
   constructor(film) {
     super();
+
     this._film = film;
     this._closeClickHandler = null;
 
@@ -134,11 +129,6 @@ export default class FilmPopup extends AbstractSmartComponent {
     super.rerender();
   }
 
-  setPopupCloseElementClickHandler(handler) {
-    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
-    this._closeClickHandler = handler;
-  }
-
   _subscribeOnEvents() {
     const element = this.getElement();
     element.querySelector(`#watchlist`).addEventListener(`change`, () => {
@@ -152,5 +142,10 @@ export default class FilmPopup extends AbstractSmartComponent {
     element.querySelector(`#favorite`).addEventListener(`change`, () => {
       this._film.favorite = !this._film.favorite;
     });
+  }
+
+  setPopupCloseElementClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
+    this._closeClickHandler = handler;
   }
 }

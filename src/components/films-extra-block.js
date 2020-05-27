@@ -14,6 +14,7 @@ const createFilmsExtraBlockTemplate = (filmsExtraBlockTitle) => {
 export default class FilmsExtraBlock extends AbstractComponent {
   constructor(blockTitle) {
     super();
+
     this._blockTitle = blockTitle;
   }
 

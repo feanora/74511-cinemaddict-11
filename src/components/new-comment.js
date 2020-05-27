@@ -50,13 +50,13 @@ export default class NewComment extends AbstractSmartComponent {
     return createNewCommentTemplate(this._emotion, this._textareaValue);
   }
 
-  rerender() {
-    super.rerender();
-  }
-
   recoveryListeners() {
     this.setCommentSubmitHandler(this._commentSubmitHandler);
     this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
   }
 
   reset() {

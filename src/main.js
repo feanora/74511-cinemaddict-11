@@ -1,24 +1,22 @@
+import API from "./api.js";
+import CommentsModel from "./models/comments.js";
+import FilmsModel from "./models/films.js";
 import FilterController from "./contorllers/filter.js";
 import FooterStatisticsComponent from "./components/footer-statistics.js";
 import MainMenuComponent from "./components/main-menu.js";
-import FilmsModel from "./models/films.js";
-import CommentsModel from "./models/comments.js";
 import PageController from "./contorllers/page.js";
 import StatisticsComponent from "./components/statistics.js";
 import UserProfileComponent from "./components/user-profile.js";
-import {generateFilmCards} from "./mock/film.js";
-import {FilmCardsCount, COMMENTS_COUNT} from "./const.js";
+import {AUTHORIZATION, COMMENTS_COUNT, MenuItem} from "./const.js";
 import {render} from "./utils/render.js";
 import {generateComments} from "./mock/comment.js";
-import {MenuItem} from "./const";
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector((`.main`));
 const siteFooterElement = document.querySelector(`.footer`);
 
-const films = generateFilmCards(FilmCardsCount.ALL);
+const api = new API(AUTHORIZATION);
 const filmsModel = new FilmsModel();
-filmsModel.setFilms(films);
 
 const comments = generateComments(COMMENTS_COUNT);
 const commentsModel = new CommentsModel();
@@ -32,7 +30,6 @@ const filterController = new FilterController(mainMenuComponent.getElement(), fi
 filterController.render();
 
 const pageController = new PageController(siteMainElement, filmsModel, commentsModel);
-pageController.render(films);
 
 const statisticsComponent = new StatisticsComponent(filmsModel);
 render(siteMainElement, statisticsComponent);
@@ -52,4 +49,10 @@ mainMenuComponent.setChangeMenuHandler((menuItem) => {
       break;
   }
 });
+
+api.getFilms()
+  .then((films) => {
+    filmsModel.setFilms(films);
+    pageController.render(films);
+  });
 

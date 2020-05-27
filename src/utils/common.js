@@ -1,4 +1,4 @@
-import {WatchedFilmsCount, SortType, TimeFormat, UserRating} from "../const.js";
+import {SortType, TimeFormat, UserRating, WatchedFilmsCount} from "../const.js";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 

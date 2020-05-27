@@ -1,12 +1,12 @@
+import FilmController from "./film.js";
 import FilmsBlockComponent from "../components/films-block.js";
 import FilmsExtraBlockComponent from "../components/films-extra-block.js";
-import SortComponent from "../components/sort.js";
-import ShowMoreButtonComponent from "../components/show-more-button.js";
 import NoFilmsBlockComponent from "../components/no-films-block.js";
-import {ExtraFilmsTitles, FilmCardsCount} from "../const.js";
+import ShowMoreButtonComponent from "../components/show-more-button.js";
+import SortComponent from "../components/sort.js";
 import {getSortedFilms} from "../utils/common.js";
 import {remove, render} from "../utils/render.js";
-import FilmController from "./film.js";
+import {ExtraFilmsTitles, FilmCardsCount} from "../const.js";
 
 const renderFilmsList = (filmsContainer, films, commentsModel, dataChangeHandler, viewChangeHandler) => {
   return films.map((film) => {

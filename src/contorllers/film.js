@@ -1,8 +1,8 @@
-import {remove, render, replace} from "../utils/render.js";
 import CommentsComponent from "../components/comments.js";
-import NewCommentComponent from "../components/new-comment.js";
 import FilmCardComponent from "../components/film-card.js";
 import FilmPopupComponent from "../components/film-popup.js";
+import NewCommentComponent from "../components/new-comment.js";
+import {remove, render, replace} from "../utils/render.js";
 import {RenderPosition, Mode} from "../const.js";
 import {encode} from "he";
 
@@ -10,6 +10,7 @@ export default class FilmController {
   constructor(container, commentsModel, dataChangeHandler, viewChangeHandler) {
     this._container = container;
     this._commentsModel = commentsModel;
+
     this._film = null;
 
     this._mode = Mode.DEFAULT;
@@ -116,6 +117,11 @@ export default class FilmController {
     this._dataChangeHandler(this, this._film, this._film);
   }
 
+  _deleteFilmCommentIndex(id) {
+    const filmCommentIndex = this._film.comments.findIndex((it) => it === (id));
+    this._film.comments = [].concat(this._film.comments.slice(0, filmCommentIndex), this._film.comments.slice(filmCommentIndex + 1));
+  }
+
   _commentChangeHandler(oldData, newData) {
     if (newData === null) {
       const isSuccess = this._commentsModel.deleteComment(oldData);
@@ -169,11 +175,6 @@ export default class FilmController {
 
     this._deleteFilmCommentIndex(commentId);
     this._commentChangeHandler(commentId, null);
-  }
-
-  _deleteFilmCommentIndex(id) {
-    const filmCommentIndex = this._film.comments.findIndex((it) => it === (id));
-    this._film.comments = [].concat(this._film.comments.slice(0, filmCommentIndex), this._film.comments.slice(filmCommentIndex + 1));
   }
 
   _popupEscKeyDownHandler(evt) {

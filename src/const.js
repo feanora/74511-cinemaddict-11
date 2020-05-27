@@ -1,3 +1,5 @@
+export const AUTHORIZATION = `Basic gioejohvbefp3owwpo5ew55`;
+
 export const FilmCardsCount = {
   ALL: 22,
   SHOWING: 5,
@@ -7,6 +9,13 @@ export const FilmCardsCount = {
 };
 
 export const COMMENTS_COUNT = 100;
+
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  AFTEREND: `afterend`,
+  BEFOREEND: `beforeend`
+};
+
 export const USER_AVATAR_PATH = `./images/bitmap@2x.png`;
 
 export const WatchedFilmsCount = {
@@ -15,13 +24,22 @@ export const WatchedFilmsCount = {
   FAN_MAX: 20
 };
 
+export const UserRating = {
+  NOVICE: `novice`,
+  FAN: `fan`,
+  MOVIE_BUFF: `movie buff`
+};
+
+export const MAX_SHORT_DESCRIPTION_LENGTH = 140;
+
 export const SortType = {
   DATE: `date`,
   RATING: `rating`,
   DEFAULT: `default`
 };
 
-export const MAX_SHORT_DESCRIPTION_LENGTH = 140;
+export const ACTIVE_FILTER_INDEX = 0;
+export const FILTER_HREF_PREFIX = `#`;
 
 export const FILTER_NAMES = [
   `All movies`,
@@ -53,16 +71,16 @@ export const StatisticsFilterType = {
   YEAR: `year`
 };
 
-export const UserRating = {
-  NOVICE: `novice`,
-  FAN: `fan`,
-  MOVIE_BUFF: `movie buff`
+export const FilmCardButtonName = {
+  "add-to-watchlist": `Add to watchlist`,
+  "mark-as-watched": `Mark as watched`,
+  "favorite": `Mark as favorite`
 };
 
-export const RenderPosition = {
-  AFTERBEGIN: `afterbegin`,
-  AFTEREND: `afterend`,
-  BEFOREEND: `beforeend`
+export const FilmPopupButtonName = {
+  watchlist: `Add to watchlist`,
+  watched: `Already watched`,
+  favorite: `Add to favorites`
 };
 
 export const ExtraFilmsTitles = {
