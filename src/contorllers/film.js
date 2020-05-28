@@ -197,7 +197,7 @@ export default class FilmController {
       evt.preventDefault();
       const updatedFilm = FilmModel.clone(film);
       updatedFilm.alreadyWatched = !film.alreadyWatched;
-      updatedFilm.watchingDate = film.watchingDate ? null : new Date();
+      updatedFilm.watchingDate = film.watchingDate ? new Date() : null;
       this._dataChangeHandler(this, film, updatedFilm);
     });
 
