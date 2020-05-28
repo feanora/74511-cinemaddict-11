@@ -122,3 +122,10 @@ export const ButtonText = {
   DELETE: `Delete`,
   DELETING: `Deleting...`
 };
+
+export const StatusCode = {
+  OK: 200,
+  MULTIPLE_CHOICES: 300,
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404
+};
