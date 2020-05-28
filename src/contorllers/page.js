@@ -10,9 +10,9 @@ import {getSortedFilms} from "../utils/common.js";
 import {remove, render} from "../utils/render.js";
 import {ExtraFilmsTitles, FilmCardsCount} from "../const.js";
 
-const renderFilmsList = (filmsContainer, films, commentsModel, dataChangeHandler, viewChangeHandler, api) => {
+const renderFilmsList = (filmsContainer, films, commentsModel, dataChangeHandler, viewChangeHandler, api, filmsModel) => {
   return films.map((film) => {
-    const filmController = new FilmController(filmsContainer, commentsModel, dataChangeHandler, viewChangeHandler, api);
+    const filmController = new FilmController(filmsContainer, commentsModel, dataChangeHandler, viewChangeHandler, api, filmsModel);
     filmController.render(film);
     return filmController;
   });
@@ -114,7 +114,7 @@ export default class PageController {
     const filmsListElement = filmsBlockComponent.querySelector(`.films-list`);
     const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
 
-    const newFilmCards = renderFilmsList(filmsListContainerElement, films, this._commentsModel, this._dataChangeHandler, this._viewChangeHandler, this._api);
+    const newFilmCards = renderFilmsList(filmsListContainerElement, films, this._commentsModel, this._dataChangeHandler, this._viewChangeHandler, this._api, this._filmsModel);
 
     this._showedFilmControllers = this._showedFilmControllers.concat(newFilmCards);
     this._showingFilmCardsCount = this._showedFilmControllers.length;
@@ -167,8 +167,8 @@ export default class PageController {
     const sortByRatingFilms = this._filmsModel.getTopRatedFilms();
     const sortByCommentsCountFilms = this._filmsModel.getMostCommentedFilms();
 
-    const newTopRatedFilmCards = renderFilmsList(topRatedFilmsListElement, sortByRatingFilms.slice(0, FilmCardsCount.TOP_RATED), this._commentsModel, this._dataChangeHandler, this._viewChangeHandler, this._api);
-    const newMostCommentedFilmCards = renderFilmsList(mostCommentedFilmsListElement, sortByCommentsCountFilms.slice(0, FilmCardsCount.MOST_COMMENTED), this._commentsModel, this._dataChangeHandler, this._viewChangeHandler, this._api);
+    const newTopRatedFilmCards = renderFilmsList(topRatedFilmsListElement, sortByRatingFilms.slice(0, FilmCardsCount.TOP_RATED), this._commentsModel, this._dataChangeHandler, this._viewChangeHandler, this._api, this._filmsModel);
+    const newMostCommentedFilmCards = renderFilmsList(mostCommentedFilmsListElement, sortByCommentsCountFilms.slice(0, FilmCardsCount.MOST_COMMENTED), this._commentsModel, this._dataChangeHandler, this._viewChangeHandler, this._api, this._filmsModel);
     this._showedExtraFilmControllers = [].concat(newTopRatedFilmCards, newMostCommentedFilmCards);
   }
 
@@ -179,7 +179,6 @@ export default class PageController {
 
         if (isSuccess) {
           filmController.render(filmModel);
-          this._updateSortedFilms(FilmCardsCount.SHOWING);
         }
       });
   }

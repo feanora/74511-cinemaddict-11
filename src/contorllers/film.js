@@ -4,14 +4,15 @@ import FilmModel from "../models/film.js";
 import FilmPopupComponent from "../components/film-popup.js";
 import NewCommentComponent from "../components/new-comment.js";
 import {remove, render, replace} from "../utils/render.js";
-import {RenderPosition, Mode} from "../const.js";
+import {ButtonText, RenderPosition, Mode} from "../const.js";
 import {encode} from "he";
 
-
 export default class FilmController {
-  constructor(container, commentsModel, dataChangeHandler, viewChangeHandler) {
+  constructor(container, commentsModel, dataChangeHandler, viewChangeHandler, api, filmsModel) {
     this._container = container;
     this._commentsModel = commentsModel;
+    this._filmsModel = filmsModel;
+    this._api = api;
 
     this._film = null;
 
@@ -67,7 +68,8 @@ export default class FilmController {
   }
 
   _renderCommentsBlock() {
-    const filmComments = this._commentsModel.getComments();
+    const allComments = this._commentsModel.getComments();
+    const filmComments = this._getFilmComments(allComments);
 
     this._commentsComponent = new CommentsComponent(filmComments);
     const commentsContainer = this._filmPopupComponent.getElement().querySelector(`.film-details__inner`);
@@ -79,6 +81,7 @@ export default class FilmController {
 
     const newCommentContainerElement = this._commentsComponent.getElement().querySelector(`.film-details__comments-wrap`);
     render(newCommentContainerElement, this._newCommentComponent);
+    this._newCommentComponent.reset();
 
     this._setCommentBlockHandlers();
   }
@@ -133,8 +136,8 @@ export default class FilmController {
 
     if (oldData === null) {
       this._commentsModel.addComment(newData);
-      this._newCommentComponent.reset();
       this._rerenderCommentsBlock();
+      this._newCommentComponent.reset();
     }
   }
 
@@ -151,15 +154,24 @@ export default class FilmController {
       }
 
       const newComment = {
-        id: String(new Date() + Math.random()),
-        author: `Evil Author`,
         comment: sanitizedCommentText,
         date: new Date(),
         emotion: newCommentEmotionElement.alt.substring(IMG_ALT_PREFIX.length)
       };
 
-      this._film.comments = [].concat(newComment.id, this._film.comments);
-      this._commentChangeHandler(null, newComment);
+      const target = evt.target;
+      target.disabled = true;
+
+      this._api.addComment(newComment, this._film)
+        .then((data) => {
+          this._film.comments = data.movie.comments;
+          const commentsList = data.comments;
+          this._filmsModel.updateFilm(this._film.id, data.movie);
+          this._commentChangeHandler(null, commentsList);
+        })
+        .catch(() => {
+          target.disabled = false;
+        });
     }
   }
 
@@ -173,9 +185,23 @@ export default class FilmController {
     }
 
     const commentId = target.dataset.id;
+    target.textContent = ButtonText.DELETING;
+    target.disabled = true;
 
-    this._deleteFilmCommentIndex(commentId);
-    this._commentChangeHandler(commentId, null);
+    this._api.deleteComment(commentId)
+      .then(() => {
+        this._deleteFilmCommentIndex(commentId);
+
+        const updatedFilm = FilmModel.clone(this._film);
+        updatedFilm.comments = this._film.comments;
+        this._filmsModel.updateFilm(this._film.id, updatedFilm);
+
+        this._commentChangeHandler(commentId, null);
+      })
+      .catch(() => {
+        target.textContent = ButtonText.DELETE;
+        target.disabled = false;
+      });
   }
 
   _popupEscKeyDownHandler(evt) {

@@ -117,3 +117,8 @@ export const MenuItem = {
   FILMS: `films`,
   STATISTICS: `statistics`
 };
+
+export const ButtonText = {
+  DELETE: `Delete`,
+  DELETING: `Deleting...`
+};

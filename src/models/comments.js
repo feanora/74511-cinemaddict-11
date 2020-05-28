@@ -8,7 +8,7 @@ export default class Comments {
   }
 
   setComments(comments) {
-    this._comments = Array.from(comments);
+    this._comments = this._comments.concat(comments);
   }
 
   deleteComment(id) {
@@ -22,7 +22,7 @@ export default class Comments {
     return true;
   }
 
-  addComment(comment) {
-    this._comments = [].concat(comment, this._comments);
+  addComment(comments) {
+    this._comments = this._comments.concat(comments.filter((comment) => this._comments.indexOf(comment) === -1));
   }
 }
