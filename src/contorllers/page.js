@@ -98,11 +98,15 @@ export default class PageController {
     this._showedFilmControllers = [];
   }
 
-  _updateFilms(count) {
+  _updateSortedFilms(count) {
     this._removeFilms();
-    this._sortComponent.resetSortType();
     this._renderFilmsInAllBlock(this._filmsModel.getFilms().slice(0, count));
     this._renderShowMoreButton();
+  }
+
+  _updateFilms(count) {
+    this._sortComponent.resetSortType();
+    this._updateSortedFilms(count);
   }
 
   _renderFilmsInAllBlock(films) {
@@ -175,6 +179,7 @@ export default class PageController {
 
         if (isSuccess) {
           filmController.render(filmModel);
+          this._updateSortedFilms(FilmCardsCount.SHOWING);
         }
       });
   }
