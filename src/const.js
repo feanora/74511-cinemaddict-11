@@ -15,6 +15,11 @@ export const FilmCardsCount = {
   MOST_COMMENTED: 2
 };
 
+export const ExtraFilmsBlockPosition = {
+  TOP_RATED: 0,
+  MOST_COMMENTED: 1
+};
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   AFTEREND: `afterend`,
@@ -86,11 +91,6 @@ export const FilmPopupButtonName = {
   watchlist: `Add to watchlist`,
   watched: `Already watched`,
   favorite: `Add to favorites`
-};
-
-export const ExtraFilmsTitles = {
-  TOP_RATED: `Top rated`,
-  MOST_COMMENTED: `Most commented`
 };
 
 export const EMOJIS = [

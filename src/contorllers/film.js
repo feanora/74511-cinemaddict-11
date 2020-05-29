@@ -43,7 +43,6 @@ export default class FilmController {
 
     if (oldFilmCardComponent && oldFilmPopupComponent) {
       replace(this._filmCardComponent, oldFilmCardComponent);
-
     } else {
       render(this._container, this._filmCardComponent);
     }
