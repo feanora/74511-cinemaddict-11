@@ -4,7 +4,8 @@ import FilmModel from "../models/film.js";
 import FilmPopupComponent from "../components/film-popup.js";
 import NewCommentComponent from "../components/new-comment.js";
 import {remove, render, replace} from "../utils/render.js";
-import {ButtonText, RenderPosition, Mode} from "../const.js";
+import {shake} from "../utils/common.js";
+import {ButtonText, RenderPosition, Mode, SHAKE_ANIMATION_TIMEOUT} from "../const.js";
 import {encode} from "he";
 
 export default class FilmController {
@@ -121,11 +122,6 @@ export default class FilmController {
     this._dataChangeHandler(this, this._film, this._film);
   }
 
-  _deleteFilmCommentIndex(id) {
-    const filmCommentIndex = this._film.comments.findIndex((it) => it === (id));
-    this._film.comments = [].concat(this._film.comments.slice(0, filmCommentIndex), this._film.comments.slice(filmCommentIndex + 1));
-  }
-
   _commentChangeHandler(oldData, newData) {
     if (newData === null) {
       const isSuccess = this._commentsModel.deleteComment(oldData);
@@ -171,6 +167,7 @@ export default class FilmController {
         })
         .catch(() => {
           target.disabled = false;
+          shake(this._newCommentComponent.getElement(), SHAKE_ANIMATION_TIMEOUT);
         });
     }
   }
@@ -188,9 +185,11 @@ export default class FilmController {
     target.textContent = ButtonText.DELETING;
     target.disabled = true;
 
+    const filmCommentIndex = this._film.comments.findIndex((it) => it === (commentId));
+
     this._api.deleteComment(commentId)
       .then(() => {
-        this._deleteFilmCommentIndex(commentId);
+        this._film.comments = [].concat(this._film.comments.slice(0, filmCommentIndex), this._film.comments.slice(filmCommentIndex + 1));
 
         const updatedFilm = FilmModel.clone(this._film);
         updatedFilm.comments = this._film.comments;
@@ -201,6 +200,7 @@ export default class FilmController {
       .catch(() => {
         target.textContent = ButtonText.DELETE;
         target.disabled = false;
+        shake(this._commentsComponent.getElement().querySelectorAll(`.film-details__comment`)[filmCommentIndex], SHAKE_ANIMATION_TIMEOUT);
       });
   }
 

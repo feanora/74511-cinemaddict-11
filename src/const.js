@@ -129,3 +129,5 @@ export const StatusCode = {
   UNAUTHORIZED: 401,
   NOT_FOUND: 404
 };
+
+export const SHAKE_ANIMATION_TIMEOUT = 600;
