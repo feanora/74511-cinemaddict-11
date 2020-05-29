@@ -157,6 +157,7 @@ export default class FilmController {
 
       const target = evt.target;
       target.disabled = true;
+      target.style.border = `none`;
 
       this._api.addComment(newComment, this._film)
         .then((data) => {
@@ -168,6 +169,7 @@ export default class FilmController {
         .catch(() => {
           target.disabled = false;
           shake(this._newCommentComponent.getElement(), SHAKE_ANIMATION_TIMEOUT);
+          target.style.border = `3px solid red`;
         });
     }
   }
