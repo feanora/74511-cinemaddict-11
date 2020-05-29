@@ -2,27 +2,6 @@ import {SortType, TimeFormat, UserRating, WatchedFilmsCount} from "../const.js";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 
-export const getRandomNumber = (max, min = 0) => {
-  return Math.round(Math.random() * (max - min) + min);
-};
-
-export const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-};
-
-export const getNewLengthArray = (array, maxArrayLength, minArrayLength = 1) => {
-  let newArray = [];
-  let newArrayLength = getRandomNumber(maxArrayLength, minArrayLength);
-  for (let i = 0; i < newArrayLength; i++) {
-    newArray[i] = array[i];
-  }
-  return newArray;
-};
-
 export const formatDate = (date, timeFormat) => {
   return moment(date).format(timeFormat);
 };
