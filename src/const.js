@@ -15,6 +15,11 @@ export const FilmCardsCount = {
   MOST_COMMENTED: 2
 };
 
+export const ExtraFilmsBlockPosition = {
+  TOP_RATED: 0,
+  MOST_COMMENTED: 1
+};
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   AFTEREND: `afterend`,
@@ -88,11 +93,6 @@ export const FilmPopupButtonName = {
   favorite: `Add to favorites`
 };
 
-export const ExtraFilmsTitles = {
-  TOP_RATED: `Top rated`,
-  MOST_COMMENTED: `Most commented`
-};
-
 export const EMOJIS = [
   `smile`,
   `sleeping`,
@@ -117,3 +117,17 @@ export const MenuItem = {
   FILMS: `films`,
   STATISTICS: `statistics`
 };
+
+export const ButtonText = {
+  DELETE: `Delete`,
+  DELETING: `Deleting...`
+};
+
+export const StatusCode = {
+  OK: 200,
+  MULTIPLE_CHOICES: 300,
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404
+};
+
+export const SHAKE_ANIMATION_TIMEOUT = 600;

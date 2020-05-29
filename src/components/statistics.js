@@ -61,34 +61,39 @@ const createStatisticsFilterTemplate = (activeFilter) => {
   );
 };
 
-const getWatchedFilmsCount = (films) => getWatchedFilms(films).length;
+const createUserRankMarkup = (rank) => {
+  return (
+    `<p class="statistic__rank">
+      Your rank
+      <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
+      <span class="statistic__rank-label">${rank}</span>
+    </p>`
+  );
+};
+
+const createUserRankTemplate = (filmsCount) => {
+  const userRank = getUserRating(filmsCount);
+  return filmsCount ? createUserRankMarkup(userRank) : ``;
+};
 
 const createStatisticsTemplate = (films, activeFilter) => {
-  const watchedFilmsCount = getWatchedFilmsCount(films);
-  const userRank = getUserRating(watchedFilmsCount);
+  const watchedFilms = getWatchedFilms(films);
+  const watchedFilmsCount = watchedFilms.length;
 
-  const totalDuration = moment.duration(getTotalDuration(films), `minutes`);
+  const totalDuration = moment.duration(getTotalDuration(watchedFilms), `minutes`);
   const totalHoursCount = Math.floor(totalDuration.asHours());
   const totalMinutesCount = totalDuration.minutes();
 
-  const uniqueGenres = getUniqueGenres(getAllGenresAllFilms(films));
-  const allGenres = getAllGenresAllFilms(films);
+  const uniqueGenres = getUniqueGenres(getAllGenresAllFilms(watchedFilms));
+  const allGenres = getAllGenresAllFilms(watchedFilms);
   const filmsCountOfEachGenre = getFilmCountOfEachGenre(uniqueGenres, allGenres);
 
-  let topGenre = ``;
-
-  if (filmsCountOfEachGenre[0]) {
-    topGenre = filmsCountOfEachGenre[0] [`genre`];
-  }
+  const topGenre = filmsCountOfEachGenre[0] ? filmsCountOfEachGenre[0] [`genre`] : ``;
 
   return (
     `<section class="statistic">
-    <p class="statistic__rank">
-      Your rank
-      <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-      <span class="statistic__rank-label">${userRank}</span>
-    </p>
 
+       ${createUserRankTemplate(watchedFilmsCount)}
        ${createStatisticsFilterTemplate(activeFilter)}
 
     <ul class="statistic__text-list">

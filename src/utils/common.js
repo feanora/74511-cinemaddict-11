@@ -2,42 +2,6 @@ import {SortType, TimeFormat, UserRating, WatchedFilmsCount} from "../const.js";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 
-export const getRandomNumber = (max, min = 0) => {
-  return Math.round(Math.random() * (max - min) + min);
-};
-
-export const getRandomFloatNumber = (digit, max, min = 0) => {
-  return Number((Math.random() * (max - min) + min).toFixed(digit));
-};
-
-export const getRandomArrayItem = (array) => {
-  const randomIndex = getRandomNumber(array.length - 1, 0);
-  return array[randomIndex];
-};
-
-export const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-};
-
-export const getNewLengthArray = (array, maxArrayLength, minArrayLength = 1) => {
-  let newArray = [];
-  let newArrayLength = getRandomNumber(maxArrayLength, minArrayLength);
-  for (let i = 0; i < newArrayLength; i++) {
-    newArray[i] = array[i];
-  }
-  return newArray;
-};
-
-export const getNewLengthShuffleArray = (array, maxArrayLength, minArrayLength = 1) => {
-  return getNewLengthArray(shuffleArray(array), maxArrayLength, minArrayLength);
-};
-
-export const getBooleanValue = () => Math.random() > 0.5;
-
 export const formatDate = (date, timeFormat) => {
   return moment(date).format(timeFormat);
 };
@@ -77,5 +41,13 @@ export const getSortedFilms = (films, sortType, from, to) => {
   }
 
   return sortedFilms.slice(from, to);
+};
+
+export const shake = (element, timeout) => {
+  element.style.animation = `shake ${timeout / 1000}s`;
+
+  setTimeout(() => {
+    element.style.animation = ``;
+  }, timeout);
 };
 
