@@ -41,6 +41,11 @@ export default class FilterController {
     }
   }
 
+  deactivateFilterType() {
+    this._activeFilterType = ``;
+    this._dataChangeHandler();
+  }
+
   _filterChangeHandler(filterType) {
     this._filmsModel.setFilter(filterType);
     this._activeFilterType = filterType;

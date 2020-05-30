@@ -32,9 +32,12 @@ mainMenuComponent.setChangeMenuHandler((menuItem) => {
   switch (menuItem) {
     case MenuItem.STATISTICS:
       pageController.hide();
+      filterController.deactivateFilterType();
       statisticsComponent.show();
+      mainMenuComponent.addStatisticsActiveClass();
       break;
     case MenuItem.FILMS:
+      mainMenuComponent.removeStatisticsActiveClass();
       statisticsComponent.hide();
       pageController.show();
       break;

@@ -15,6 +15,16 @@ export default class MainMenu extends AbstractComponent {
     return createMainMenuTemplate();
   }
 
+  addStatisticsActiveClass() {
+    const activeItem = this.getElement().querySelector(`.main-navigation__additional`);
+    activeItem.classList.add(`main-navigation__additional--active`);
+  }
+
+  removeStatisticsActiveClass() {
+    const activeItem = this.getElement().querySelector(`.main-navigation__additional`);
+    activeItem.classList.remove(`main-navigation__additional--active`);
+  }
+
   setChangeMenuHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
       if (evt.target.tagName === `A` || evt.target.parentElement.tagName === `A`) {

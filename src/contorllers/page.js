@@ -156,14 +156,18 @@ export default class PageController {
     this._showedMostCommentedFilmControllers = this._showedMostCommentedFilmControllers.concat(newMostCommentedFilmCards);
   }
 
-  _removeMostCommentedFilms() {
+  _removeExtraFilms() {
     remove(this._mostCommentedFilmsBlockComponent);
+    remove(this._topRatingFilmsBlockComponent);
     this._showedMostCommentedFilmControllers.forEach((filmController) => filmController.destroy());
+    this._showedTopRatedFilmControllers.forEach((filmController) => filmController.destroy());
     this._showedMostCommentedFilmControllers = [];
+    this._showedTopRatedFilmControllers = [];
   }
 
-  _updateMostCommentedFilms() {
-    this._removeMostCommentedFilms();
+  _updateExtraFilms() {
+    this._removeExtraFilms();
+    this._renderTopRatedFilmsBlock(this._filmsBlockComponent.getElement());
     this._renderMostCommentedFilmsBlock(this._filmsBlockComponent.getElement());
   }
 
@@ -209,7 +213,8 @@ export default class PageController {
 
         if (isSuccess) {
           filmController.render(filmModel);
-          this._updateMostCommentedFilms();
+          this._updateSortedFilms(this._showingFilmCardsCount);
+          this._updateExtraFilms();
         }
       });
   }
