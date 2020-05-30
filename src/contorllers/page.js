@@ -9,7 +9,7 @@ import SortComponent from "../components/sort.js";
 import TopRatingFilmsBlockComponent from "../components/top-rating-block.js";
 import {getSortedFilms} from "../utils/common.js";
 import {remove, render} from "../utils/render.js";
-import {ExtraFilmsBlockPosition, FilmCardsCount} from "../const.js";
+import {ExtraFilmsBlockPosition, FilmCardsCount, Mode} from "../const.js";
 
 const renderFilmsList = (filmsContainer, films, commentsModel, dataChangeHandler, viewChangeHandler, api, filmsModel) => {
   return films.map((film) => {
@@ -206,15 +206,18 @@ export default class PageController {
     this._renderShowMoreButton();
   }
 
-  _dataChangeHandler(filmController, oldData, newData) {
+  _dataChangeHandler(filmController, oldData, newData, mode) {
     this._api.updateFilm(oldData.id, newData)
       .then((filmModel) => {
         const isSuccess = this._filmsModel.updateFilm(oldData.id, filmModel);
 
         if (isSuccess) {
           filmController.render(filmModel);
-          this._updateSortedFilms(this._showingFilmCardsCount);
-          this._updateExtraFilms();
+
+          if (mode !== Mode.POPUP) {
+            this._updateExtraFilms();
+            this._updateSortedFilms(this._showingFilmCardsCount);
+          }
         }
       });
   }
