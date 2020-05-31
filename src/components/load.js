@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component.js";
 
-const createNoFilmsBlockTemplate = () => {
+const createLoadBlockTemplate = () => {
   return (
     `<section class="films">
         <section class="films-list">
@@ -13,6 +13,6 @@ const createNoFilmsBlockTemplate = () => {
 export default class Load extends AbstractComponent {
 
   getTemplate() {
-    return createNoFilmsBlockTemplate();
+    return createLoadBlockTemplate();
   }
 }

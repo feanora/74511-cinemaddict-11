@@ -23,6 +23,7 @@ const filterController = new FilterController(mainMenuComponent.getElement(), fi
 filterController.render();
 
 const pageController = new PageController(siteMainElement, filmsModel, api);
+pageController.showLoad();
 
 const statisticsComponent = new StatisticsComponent(filmsModel);
 render(siteMainElement, statisticsComponent);
@@ -48,6 +49,7 @@ api.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
     render(siteHeaderElement, new UserProfileComponent(filmsModel));
+    pageController.hideLoad();
     pageController.render();
     render(siteFooterElement, new FooterStatisticsComponent(filmsModel));
   });

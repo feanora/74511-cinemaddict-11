@@ -59,15 +59,20 @@ export default class PageController {
     this._filmsBlockComponent.show();
   }
 
-  render() {
+  showLoad() {
     render(this._container, this._sortComponent);
     render(this._container, this._loadingFilmsComponent);
+  }
+
+  hideLoad() {
+    this._sortComponent.getElement().remove();
+    this._loadingFilmsComponent.getElement().remove();
+  }
+
+  render() {
+    render(this._container, this._sortComponent);
 
     const films = this._filmsModel.getFilms();
-
-    if (films) {
-      this._loadingFilmsComponent.getElement().remove();
-    }
 
     if (!films.length) {
       render(this._container, this._noFilmsBlockComponent);
