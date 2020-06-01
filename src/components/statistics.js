@@ -205,7 +205,7 @@ export default class Statistics extends AbstractSmartComponent {
     super();
 
     this._filmsModel = filmsModel;
-    this._activeStatisticsFilm = StatisticsFilterType.ALL;
+    this._activeStatisticsFilter = StatisticsFilterType.ALL;
 
     this._chart = null;
     this._renderChart();
@@ -214,7 +214,7 @@ export default class Statistics extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createStatisticsTemplate(this._filmsModel.getFilmsAll(), this._activeStatisticsFilm);
+    return createStatisticsTemplate(this._filmsModel.getFilmsAll(), this._activeStatisticsFilter);
   }
 
   recoveryListeners() {
@@ -230,7 +230,7 @@ export default class Statistics extends AbstractSmartComponent {
   show() {
     super.show();
 
-    this._activeStatisticsFilm = StatisticsFilterType.ALL;
+    this._activeStatisticsFilter = StatisticsFilterType.ALL;
 
     this.rerender();
   }
@@ -238,7 +238,7 @@ export default class Statistics extends AbstractSmartComponent {
   _renderChart() {
     const statisticCtx = this.getElement().querySelector(`.statistic__chart`);
     const watchedFilms = getWatchedFilms(this._filmsModel.getFilmsAll());
-    const films = getFilmsByStatisticsFilter(watchedFilms, this._activeStatisticsFilm);
+    const films = getFilmsByStatisticsFilter(watchedFilms, this._activeStatisticsFilter);
 
     this._resetChart();
     this._chart = renderChart(statisticCtx, films);
@@ -256,7 +256,7 @@ export default class Statistics extends AbstractSmartComponent {
       if (evt.target.tagName !== `INPUT`) {
         return;
       }
-      this._activeStatisticsFilm = evt.target.value;
+      this._activeStatisticsFilter = evt.target.value;
       this.rerender();
     });
   }

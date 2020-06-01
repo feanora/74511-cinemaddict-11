@@ -23,6 +23,7 @@ const filterController = new FilterController(mainMenuComponent.getElement(), fi
 filterController.render();
 
 const pageController = new PageController(siteMainElement, filmsModel, api);
+pageController.showLoad();
 
 const statisticsComponent = new StatisticsComponent(filmsModel);
 render(siteMainElement, statisticsComponent);
@@ -32,9 +33,12 @@ mainMenuComponent.setChangeMenuHandler((menuItem) => {
   switch (menuItem) {
     case MenuItem.STATISTICS:
       pageController.hide();
+      filterController.deactivateFilterType();
       statisticsComponent.show();
+      mainMenuComponent.addStatisticsActiveClass();
       break;
     case MenuItem.FILMS:
+      mainMenuComponent.removeStatisticsActiveClass();
       statisticsComponent.hide();
       pageController.show();
       break;
@@ -45,6 +49,7 @@ api.getFilms()
   .then((films) => {
     filmsModel.setFilms(films);
     render(siteHeaderElement, new UserProfileComponent(filmsModel));
+    pageController.hideLoad();
     pageController.render();
     render(siteFooterElement, new FooterStatisticsComponent(filmsModel));
   });

@@ -119,9 +119,11 @@ export default class FilmPopup extends AbstractSmartComponent {
     super();
 
     this._film = film;
-    this._closeClickHandler = null;
 
-    this._subscribeOnEvents();
+    this._addWatchListChangeHandler = null;
+    this._WatchedChangeHandler = null;
+    this._favoriteChangeHandler = null;
+    this._closeClickHandler = null;
   }
 
   getTemplate() {
@@ -129,28 +131,29 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
+    this.setAddWatchListButtonChangeHandler(this._addWatchListChangeHandler);
+    this.setWatchedButtonChangeHandler(this._WatchedChangeHandler);
+    this.setFavoriteButtonChangeHandler(this._favoriteChangeHandler);
     this.setPopupCloseElementClickHandler(this._closeClickHandler);
-
-    this._subscribeOnEvents();
   }
 
   rerender() {
     super.rerender();
   }
 
-  _subscribeOnEvents() {
-    const element = this.getElement();
-    element.querySelector(`#watchlist`).addEventListener(`change`, () => {
-      this._film.watchlist = !this._film.watchlist;
-    });
+  setAddWatchListButtonChangeHandler(handler) {
+    this.getElement().querySelector(`#watchlist`).addEventListener(`change`, handler);
+    this._addWatchListChangeHandler = handler;
+  }
 
-    element.querySelector(`#watched`).addEventListener(`change`, () => {
-      this._film.alreadyWatched = !this._film.alreadyWatched;
-    });
+  setWatchedButtonChangeHandler(handler) {
+    this.getElement().querySelector(`#watched`).addEventListener(`change`, handler);
+    this._WatchedChangeHandler = handler;
+  }
 
-    element.querySelector(`#favorite`).addEventListener(`change`, () => {
-      this._film.favorite = !this._film.favorite;
-    });
+  setFavoriteButtonChangeHandler(handler) {
+    this.getElement().querySelector(`#favorite`).addEventListener(`change`, handler);
+    this._favoriteChangeHandler = handler;
   }
 
   setPopupCloseElementClickHandler(handler) {
@@ -158,3 +161,4 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._closeClickHandler = handler;
   }
 }
+

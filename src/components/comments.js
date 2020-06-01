@@ -20,7 +20,7 @@ const createCommentsMarkup = (comments) => {
         </div>
       </li>`
     );
-  });
+  }).join(`\n`);
 };
 
 const getCommentsTitle = (commentsCount) => commentsCount > 1 ? `Comments` : `Comment`;
