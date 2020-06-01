@@ -105,6 +105,11 @@ export const Mode = {
   POPUP: `popup`
 };
 
+export const FilmsMode = {
+  FULL: `full`,
+  EMPTY: `empty`
+};
+
 export const TimeFormat = {
   RELEASE_YEAR: `YYYY`,
   RELEASE_DATE: `DD MMMM YYYY`,
