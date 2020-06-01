@@ -18,7 +18,6 @@ export default class FilmController {
     this._film = null;
 
     this._mode = Mode.DEFAULT;
-    this._commentMode = Mode.DEFAULT;
 
     this._filmCardComponent = null;
     this._filmPopupComponent = null;
@@ -46,18 +45,19 @@ export default class FilmController {
     if (oldFilmCardComponent && oldFilmPopupComponent) {
       replace(this._filmCardComponent, oldFilmCardComponent);
       replace(this._filmPopupComponent, oldFilmPopupComponent);
+
       this._renderCommentsBlock();
       this._filmPopupComponent.recoveryListeners();
+
     } else {
       render(this._container, this._filmCardComponent);
     }
-
-
   }
 
   destroy() {
     remove(this._filmCardComponent);
     remove(this._filmPopupComponent);
+
     document.removeEventListener(`keydown`, this._popupEscKeyDownHandler);
   }
 
@@ -100,6 +100,7 @@ export default class FilmController {
     if (this._commentsComponent) {
       remove(this._commentsComponent);
     }
+
     this._renderCommentsBlock();
   }
 
@@ -128,11 +129,11 @@ export default class FilmController {
   _commentChangeHandler(oldData, newData) {
     if (newData === null) {
       const isSuccess = this._commentsModel.deleteComment(oldData);
+
       if (isSuccess) {
         this._rerenderCommentsBlock();
 
         this._dataChangeHandler(this, this._film, this._film, this._mode);
-
       }
     }
 

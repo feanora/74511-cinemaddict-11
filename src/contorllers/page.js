@@ -123,10 +123,13 @@ export default class PageController {
   _renderNoFilmsBlock(films) {
     if (!films.length) {
       this._removeFilms();
+
       remove(this._filmsListComponent);
       remove(this._showMoreButtonComponent);
+
       this._noFilmsBlockComponent = new NoFilmsBlockComponent();
       render(this._filmsBlockComponent.getElement(), this._noFilmsBlockComponent, RenderPosition.AFTERBEGIN);
+
       this._filmsMode = FilmsMode.EMPTY;
     }
   }
@@ -201,14 +204,17 @@ export default class PageController {
   _removeExtraFilms() {
     remove(this._mostCommentedFilmsBlockComponent);
     remove(this._topRatingFilmsBlockComponent);
+
     this._showedMostCommentedFilmControllers.forEach((filmController) => filmController.destroy());
     this._showedTopRatedFilmControllers.forEach((filmController) => filmController.destroy());
+
     this._showedMostCommentedFilmControllers = [];
     this._showedTopRatedFilmControllers = [];
   }
 
   _updateExtraFilms() {
     this._removeExtraFilms();
+
     this._renderTopRatedFilmsBlock(this._filmsBlockComponent.getElement());
     this._renderMostCommentedFilmsBlock(this._filmsBlockComponent.getElement());
   }
@@ -243,7 +249,9 @@ export default class PageController {
   _sortTypeChangeHandler(sortType) {
     this._showingFilmCardsCount = FilmCardsCount.SHOWING;
     const sortedFilms = getSortedFilms(this._filmsModel.getFilms(), sortType, 0, this._showingFilmCardsCount);
+
     this._removeFilms();
+
     this._renderFilmsInAllBlock(sortedFilms);
     this._renderShowMoreButton();
   }
