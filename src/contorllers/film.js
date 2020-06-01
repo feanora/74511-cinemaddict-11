@@ -219,6 +219,8 @@ export default class FilmController {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
     if (isEscKey) {
       this._closePopup();
+      const updatedFilm = FilmModel.clone(this._film);
+      this._dataChangeHandler(this, this._film, updatedFilm, this._mode);
     }
   }
 
