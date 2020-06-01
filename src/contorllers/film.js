@@ -110,7 +110,6 @@ export default class FilmController {
 
     document.body.classList.add(`hide-overflow`);
     this._renderPopup(film);
-    this._setPopupHandlers(film);
     document.addEventListener(`keydown`, this._popupEscKeyDownHandler);
   }
 
